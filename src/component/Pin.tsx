@@ -1,7 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { pinsSelector } from "../reducer/pins";
+
 import { RootState } from "../reducer";
+import { pinsSelector } from "../reducer/pins";
 
 interface IProps {
   id: string;

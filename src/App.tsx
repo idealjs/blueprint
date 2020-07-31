@@ -1,32 +1,54 @@
-import React, { useEffect, useRef } from "react";
 import "./App.css";
-import interact from "interactjs";
+
+import React, { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import uniqid from "uniqid";
+
+import Chessboard from "./component/Chessboard";
+import { addChessman, CHESSMAN_TYPE } from "./reducer/chessmen";
+import { addManyPin, PIN_TYPE } from "./reducer/pins";
 
 function App() {
-  const ref = useRef<SVGRectElement>(null);
+  const dispatch = useDispatch();
+  const onClick = useCallback(() => {
+    const chessmanId = uniqid(`${CHESSMAN_TYPE.FUNCTION}_`);
+    const pinInId = uniqid(`${PIN_TYPE.IN}_`);
+    const pinOutId = uniqid(`${PIN_TYPE.OUT}_`);
+    dispatch(
+      addChessman({
+        id: chessmanId,
+        type: CHESSMAN_TYPE.FUNCTION,
+        width: 40,
+        height: 30,
+        x: Math.random() * 10,
+        y: Math.random() * 10,
+        pins: [pinInId, pinOutId],
+      })
+    );
 
-  useEffect(() => {
-    interact(ref.current!).draggable({
-      listeners: {
-        start: () => {
-          console.log("start drag");
+    dispatch(
+      addManyPin([
+        {
+          id: pinInId,
+          type: PIN_TYPE.IN,
+          x: 10,
+          y: 10,
+          parentId: chessmanId,
         },
-        move: () => {
-          console.log("move drag");
+        {
+          id: pinOutId,
+          type: PIN_TYPE.OUT,
+          x: 90,
+          y: 10,
+          parentId: chessmanId,
         },
-        end: () => {
-          console.log("end drag");
-        },
-      },
-    });
-  }, []);
+      ])
+    );
+  }, [dispatch]);
   return (
     <div className="App" style={{ width: "100vw", height: "100vh" }}>
-      <svg width="100%" height="100%">
-        <g>
-          <rect ref={ref} width={300} height={300} />
-        </g>
-      </svg>
+      <Chessboard />
+      <button onClick={onClick}>Add chessman</button>
     </div>
   );
 }
