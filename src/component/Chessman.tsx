@@ -7,10 +7,11 @@ import { chessmenSelector, updateChessman } from "../reducer/chessmen";
 import Pin from "./Pin";
 interface IProps {
   id: string | number;
+  svgRef: React.RefObject<SVGSVGElement>;
 }
 
 const Chessman = (props: IProps) => {
-  const { id } = props;
+  const { id, svgRef } = props;
   const { x, y, height, width } = useSelector((state: RootState) =>
     chessmenSelector.selectById(state, id)
   )!;
@@ -21,19 +22,27 @@ const Chessman = (props: IProps) => {
   );
 
   useEffect(() => {
+    let x1: number;
+    let y1: number;
     interact(ref.current!).draggable({
       listeners: {
         start: (event) => {
-          console.log("start drag", event);
+          x1 = event.clientX0 - ref.current?.getBoundingClientRect().left!;
+          y1 = event.clientY0 - ref.current?.getBoundingClientRect().top!;
         },
         move: (event) => {
-          console.log("move drag", event);
           dispatch(
             updateChessman({
               id: id,
               changes: {
-                x: event.client.x - event.clientX0,
-                y: event.client.y - event.clientY0,
+                x:
+                  event.client.x -
+                  svgRef.current?.getBoundingClientRect().left! -
+                  x1,
+                y:
+                  event.client.y -
+                  svgRef.current?.getBoundingClientRect().top! -
+                  y1,
               },
             })
           );
@@ -43,13 +52,13 @@ const Chessman = (props: IProps) => {
         },
       },
     });
-  }, [dispatch, id]);
+  }, [dispatch, id, svgRef]);
 
   return (
     <g ref={ref}>
       <rect width={width} height={height} transform={`translate(${x},${y})`} />
       {chessman?.pins.map((pinId) => (
-        <Pin id={pinId} key={pinId} />
+        <Pin svgRef={svgRef} id={pinId} key={pinId} />
       ))}
     </g>
   );

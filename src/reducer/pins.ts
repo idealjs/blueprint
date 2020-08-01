@@ -1,4 +1,5 @@
-import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
+import { createEntityAdapter,createSlice } from "@reduxjs/toolkit";
+
 import { RootState } from ".";
 
 export enum PIN_TYPE {

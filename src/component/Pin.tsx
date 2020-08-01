@@ -6,6 +6,7 @@ import { pinsSelector } from "../reducer/pins";
 
 interface IProps {
   id: string;
+  svgRef: React.RefObject<SVGSVGElement>;
 }
 
 const Pin = (props: IProps) => {

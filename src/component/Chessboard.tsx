@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useRef } from "react";
 import { useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
@@ -9,11 +9,12 @@ const Chessboard: FC = () => {
   const chessmenIds = useSelector((state: RootState) =>
     chessmenSelector.selectIds(state)
   );
+  const ref = useRef<SVGSVGElement>(null);
 
   return (
-    <svg height="50%" width="50%">
+    <svg ref={ref} height="50%" width="50%">
       {chessmenIds.map((chessmanId) => (
-        <Chessman id={chessmanId} key={chessmanId} />
+        <Chessman svgRef={ref} id={chessmanId} key={chessmanId} />
       ))}
     </svg>
   );
