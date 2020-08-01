@@ -1,4 +1,4 @@
-import { createEntityAdapter,createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from ".";
 
@@ -14,7 +14,6 @@ export interface IPin {
   y: number;
   to?: {
     pinId: string;
-    chessmanId: string;
   };
   parentId: string;
 }

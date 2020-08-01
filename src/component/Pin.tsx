@@ -1,9 +1,9 @@
 import interact from "interactjs";
 import React, { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
-import { pinsSelector } from "../reducer/pins";
+import { pinsSelector, updateManyPin } from "../reducer/pins";
 
 interface IProps {
   id: string;
@@ -13,7 +13,7 @@ interface IProps {
 const Pin = (props: IProps) => {
   const { id } = props;
   const ref = useRef<SVGGElement>(null);
-
+  const dispatch = useDispatch();
   const pin = useSelector((state: RootState) =>
     pinsSelector.selectById(state, id)
   );
@@ -29,10 +29,29 @@ const Pin = (props: IProps) => {
     });
     interact(ref.current!).dropzone({
       ondrop: (event) => {
-        console.log("ondrop", event, event.relatedTarget.id, event.target.id);
+        dispatch(
+          updateManyPin([
+            {
+              id: event.relatedTarget.id,
+              changes: {
+                to: {
+                  pinId: event.target.id,
+                },
+              },
+            },
+            {
+              id: event.target.id,
+              changes: {
+                to: {
+                  pinId: event.relatedTarget.id,
+                },
+              },
+            },
+          ])
+        );
       },
     });
-  }, [id]);
+  }, [dispatch, id]);
 
   return (
     <g ref={ref} id={id}>
