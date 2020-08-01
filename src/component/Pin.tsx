@@ -29,6 +29,7 @@ const Pin = (props: IProps) => {
     });
     interact(ref.current!).dropzone({
       ondrop: (event) => {
+        console.log("drop", event);
         dispatch(
           updateManyPin([
             {

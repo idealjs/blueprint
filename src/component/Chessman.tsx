@@ -53,7 +53,7 @@ const Chessman = (props: IProps) => {
   }, [dispatch, id, svgRef]);
 
   return (
-    <g transform={`translate(${x},${y})`}>
+    <g transform={`translate(${x}, ${y})`}>
       <rect
         ref={ref}
         id={id}

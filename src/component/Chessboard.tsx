@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../reducer";
 import { chessmenSelector } from "../reducer/chessmen";
 import Chessman from "./Chessman";
+import PathLayer from "./PathLayer";
 
 const Chessboard: FC = () => {
   const chessmenIds = useSelector(
@@ -16,6 +17,7 @@ const Chessboard: FC = () => {
       {chessmenIds.map((chessmanId) => (
         <Chessman svgRef={ref} id={chessmanId} key={chessmanId} />
       ))}
+      <PathLayer />
     </svg>
   );
 };
