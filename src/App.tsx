@@ -32,14 +32,14 @@ function App() {
           id: pinInId,
           type: PIN_TYPE.IN,
           x: 10,
-          y: 10,
+          y: 15,
           parentId: chessmanId,
         },
         {
           id: pinOutId,
           type: PIN_TYPE.OUT,
-          x: 90,
-          y: 10,
+          x: 30,
+          y: 15,
           parentId: chessmanId,
         },
       ])

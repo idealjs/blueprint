@@ -55,8 +55,8 @@ const Chessman = (props: IProps) => {
   }, [dispatch, id, svgRef]);
 
   return (
-    <g ref={ref}>
-      <rect width={width} height={height} transform={`translate(${x},${y})`} />
+    <g ref={ref} transform={`translate(${x},${y})`}>
+      <rect width={width} height={height} style={{ fill: "wheat" }} />
       {chessman?.pins.map((pinId) => (
         <Pin svgRef={svgRef} id={pinId} key={pinId} />
       ))}

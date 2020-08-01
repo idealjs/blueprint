@@ -15,7 +15,11 @@ const Pin = (props: IProps) => {
     pinsSelector.selectById(state, id)
   );
 
-  return <g></g>;
+  return (
+    <g>
+      <circle cx={pin?.x} cy={pin?.y} r={5} />
+    </g>
+  );
 };
 
 export default Pin;
