@@ -6,8 +6,8 @@ import { chessmenSelector } from "../reducer/chessmen";
 import Chessman from "./Chessman";
 
 const Chessboard: FC = () => {
-  const chessmenIds = useSelector((state: RootState) =>
-    chessmenSelector.selectIds(state)
+  const chessmenIds = useSelector(
+    (state: RootState) => chessmenSelector.selectIds(state) as string[]
   );
   const ref = useRef<SVGSVGElement>(null);
 

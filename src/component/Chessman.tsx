@@ -6,7 +6,7 @@ import { RootState } from "../reducer";
 import { chessmenSelector, updateChessman } from "../reducer/chessmen";
 import Pin from "./Pin";
 interface IProps {
-  id: string | number;
+  id: string;
   svgRef: React.RefObject<SVGSVGElement>;
 }
 
@@ -47,16 +47,20 @@ const Chessman = (props: IProps) => {
             })
           );
         },
-        end: () => {
-          console.log("end drag");
-        },
+        end: () => {},
       },
     });
   }, [dispatch, id, svgRef]);
 
   return (
-    <g ref={ref} transform={`translate(${x},${y})`}>
-      <rect width={width} height={height} style={{ fill: "wheat" }} />
+    <g transform={`translate(${x},${y})`}>
+      <rect
+        ref={ref}
+        id={id}
+        width={width}
+        height={height}
+        style={{ fill: "wheat" }}
+      />
       {chessman?.pins.map((pinId) => (
         <Pin svgRef={svgRef} id={pinId} key={pinId} />
       ))}
