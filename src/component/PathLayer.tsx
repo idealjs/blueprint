@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
 import { chessmenSelector } from "../reducer/chessmen";
-import { PIN_TYPE, pinsSelector } from "../reducer/pins";
+import { PIN_DIRECTION, pinsSelector } from "../reducer/pins";
 
 const PathLayer = () => {
   const lines = useSelector((state: RootState) => {
@@ -12,7 +12,7 @@ const PathLayer = () => {
       chessman.pins
         .filter((pinId) => {
           const pin = pinsSelector.selectById(state, pinId);
-          return pin?.type === PIN_TYPE.OUT && pin.to != null;
+          return pin?.type === PIN_DIRECTION.OUT && pin.to != null;
         })
         .map((pinId) => {
           const pin = pinsSelector.selectById(state, pinId);
@@ -37,7 +37,7 @@ const PathLayer = () => {
   return (
     <g>
       {lines.map((d) => (
-        <path d={d} style={{ stroke: "orange" }} />
+        <path d={d} key={d} style={{ stroke: "orange" }} />
       ))}
     </g>
   );

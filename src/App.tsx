@@ -6,14 +6,14 @@ import uniqid from "uniqid";
 
 import Chessboard from "./component/Chessboard";
 import { addChessman, CHESSMAN_TYPE } from "./reducer/chessmen";
-import { addManyPin, PIN_TYPE } from "./reducer/pins";
+import { addManyPin, PIN_DIRECTION } from "./reducer/pins";
 
 function App() {
   const dispatch = useDispatch();
   const onClick = useCallback(() => {
     const chessmanId = uniqid(`${CHESSMAN_TYPE.FUNCTION}_`);
-    const pinInId = uniqid(`${PIN_TYPE.IN}_`);
-    const pinOutId = uniqid(`${PIN_TYPE.OUT}_`);
+    const pinInId = uniqid(`${PIN_DIRECTION.IN}_`);
+    const pinOutId = uniqid(`${PIN_DIRECTION.OUT}_`);
     dispatch(
       addChessman({
         id: chessmanId,
@@ -30,14 +30,14 @@ function App() {
       addManyPin([
         {
           id: pinInId,
-          type: PIN_TYPE.IN,
+          type: PIN_DIRECTION.IN,
           x: 10,
           y: 15,
           parentId: chessmanId,
         },
         {
           id: pinOutId,
-          type: PIN_TYPE.OUT,
+          type: PIN_DIRECTION.OUT,
           x: 30,
           y: 15,
           parentId: chessmanId,

@@ -2,14 +2,14 @@ import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from ".";
 
-export enum PIN_TYPE {
+export enum PIN_DIRECTION {
   OUT = "OUT",
   IN = "IN",
 }
 
 export interface IPin {
   id: string;
-  type: PIN_TYPE;
+  type: PIN_DIRECTION;
   x: number;
   y: number;
   to?: {
