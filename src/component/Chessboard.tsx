@@ -1,5 +1,5 @@
 import interact from "interactjs";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
@@ -17,6 +17,8 @@ const Chessboard: FC = () => {
     x: 0,
     y: 0,
   });
+
+  const [scale, setScale] = useState(1);
 
   useEffect(() => {
     let x0: number = 0;
@@ -64,15 +66,25 @@ const Chessboard: FC = () => {
     });
   }, []);
 
+  const onWheel = useCallback((event) => {
+    console.log(event.deltaY);
+    event.persist();
+    setScale((scale) => scale - event.deltaY / 200);
+  }, []);
+
   return (
-    <svg ref={ref} height="50%" width="50%">
-      <g ref={gRef} transform={`translate(${offset.x}, ${offset.y})`}>
+    <svg ref={ref} height="50%" width="50%" onWheel={onWheel}>
+      <g
+        ref={gRef}
+        transform={`translate(${offset.x}, ${offset.y}) scale(${scale})`}
+      >
         {chessmenIds.map((chessmanId) => (
           <Chessman
             svgRef={ref}
             id={chessmanId}
             key={chessmanId}
             chessboardOffset={offset}
+            chessboardScale={scale}
           />
         ))}
         <PathLayer />
