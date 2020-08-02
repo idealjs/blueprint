@@ -8,10 +8,14 @@ import Pin from "./Pin";
 interface IProps {
   id: string;
   svgRef: React.RefObject<SVGSVGElement>;
+  chessboardOffset: {
+    x: number;
+    y: number;
+  };
 }
 
 const Chessman = (props: IProps) => {
-  const { id, svgRef } = props;
+  const { id, svgRef, chessboardOffset } = props;
   const { x, y, height, width } = useSelector((state: RootState) =>
     chessmenSelector.selectById(state, id)
   )!;
@@ -22,13 +26,14 @@ const Chessman = (props: IProps) => {
   );
 
   useEffect(() => {
-    let x1: number;
-    let y1: number;
+    let x1: number = 0;
+    let y1: number = 0;
     interact(ref.current!).draggable({
       listeners: {
         start: (event) => {
           x1 = event.clientX0 - ref.current?.getBoundingClientRect().left!;
           y1 = event.clientY0 - ref.current?.getBoundingClientRect().top!;
+          console.log(x1, y1);
         },
         move: (event) => {
           dispatch(
@@ -38,10 +43,12 @@ const Chessman = (props: IProps) => {
                 x:
                   event.client.x -
                   svgRef.current?.getBoundingClientRect().left! -
+                  chessboardOffset.x -
                   x1,
                 y:
                   event.client.y -
                   svgRef.current?.getBoundingClientRect().top! -
+                  chessboardOffset.y -
                   y1,
               },
             })
@@ -50,7 +57,7 @@ const Chessman = (props: IProps) => {
         end: () => {},
       },
     });
-  }, [dispatch, id, svgRef]);
+  }, [chessboardOffset, dispatch, id, svgRef]);
 
   return (
     <g transform={`translate(${x}, ${y})`}>
