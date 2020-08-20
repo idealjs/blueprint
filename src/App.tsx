@@ -46,9 +46,20 @@ function App() {
     );
   }, [dispatch]);
   return (
-    <div className="App" style={{ width: "100vw", height: "100vh" }}>
-      <Chessboard />
-      <button onClick={onClick}>Add chessman</button>
+    <div className="App" >
+      <div style={{ width: "100vw", height: "100vh", display: "flex" }}>
+        <div style={{ width: "200px", backgroundColor: "#5e5ebb" }}>
+          test
+        </div>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+          <div style={{ flex: 1 }}>
+            <Chessboard />
+          </div>
+          <div>
+            <button onClick={onClick}>Add chessman</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

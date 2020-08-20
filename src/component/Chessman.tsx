@@ -34,7 +34,6 @@ const Chessman = (props: IProps) => {
         start: (event) => {
           x1 = event.clientX0 - ref.current?.getBoundingClientRect().left!;
           y1 = event.clientY0 - ref.current?.getBoundingClientRect().top!;
-          console.log(x1, y1);
         },
         move: (event) => {
           dispatch(
@@ -57,7 +56,7 @@ const Chessman = (props: IProps) => {
             })
           );
         },
-        end: () => {},
+        end: () => { },
       },
     });
   }, [chessboardOffset, chessboardScale, dispatch, id, svgRef]);

@@ -32,11 +32,6 @@ const Chessboard: FC = () => {
           y1 = event.clientY0 - ref.current?.getBoundingClientRect().top!;
         },
         move: (event) => {
-          console.log(
-            event.client.x - ref.current?.getBoundingClientRect().left!,
-            x1
-          );
-
           setOffset((offset) => ({
             x:
               x0 +
@@ -67,13 +62,17 @@ const Chessboard: FC = () => {
   }, []);
 
   const onWheel = useCallback((event) => {
-    console.log(event.deltaY);
+    console.log("onWheel", event.deltaY);
     event.persist();
     setScale((scale) => scale - event.deltaY / 200);
   }, []);
 
+  const onContextMenu = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
   return (
-    <svg ref={ref} height="50%" width="50%" onWheel={onWheel}>
+    <svg ref={ref} height="100%" width="100%" onWheel={onWheel} onContextMenu={onContextMenu} style={{ touchAction: "none" }}>
       <g
         ref={gRef}
         transform={`translate(${offset.x}, ${offset.y}) scale(${scale})`}
