@@ -8,40 +8,43 @@ import { addManyPin, PIN_DIRECTION } from "../../reducer/pins";
 export const useAddChessman = () => {
   const dispatch = useDispatch();
 
-  return useCallback(() => {
-    const chessmanId = uniqid(`${CHESSMAN_TYPE.FUNCTION}_`);
-    const pinInId = uniqid(`${PIN_DIRECTION.IN}_`);
-    const pinOutId = uniqid(`${PIN_DIRECTION.OUT}_`);
+  return useCallback(
+    (x, y) => {
+      const chessmanId = uniqid(`${CHESSMAN_TYPE.FUNCTION}_`);
+      const pinInId = uniqid(`${PIN_DIRECTION.IN}_`);
+      const pinOutId = uniqid(`${PIN_DIRECTION.OUT}_`);
 
-    dispatch(
-      addChessman({
-        id: chessmanId,
-        type: CHESSMAN_TYPE.FUNCTION,
-        width: 120,
-        height: 90,
-        x: Math.random() * 10,
-        y: Math.random() * 10,
-        pins: [pinInId, pinOutId],
-      })
-    );
+      dispatch(
+        addChessman({
+          id: chessmanId,
+          type: CHESSMAN_TYPE.FUNCTION,
+          width: 120,
+          height: 90,
+          x,
+          y,
+          pins: [pinInId, pinOutId],
+        })
+      );
 
-    dispatch(
-      addManyPin([
-        {
-          id: pinInId,
-          type: PIN_DIRECTION.IN,
-          x: 10,
-          y: 30,
-          parentId: chessmanId,
-        },
-        {
-          id: pinOutId,
-          type: PIN_DIRECTION.OUT,
-          x: 110,
-          y: 30,
-          parentId: chessmanId,
-        },
-      ])
-    );
-  }, [dispatch]);
+      dispatch(
+        addManyPin([
+          {
+            id: pinInId,
+            type: PIN_DIRECTION.IN,
+            x: 10,
+            y: 30,
+            parentId: chessmanId,
+          },
+          {
+            id: pinOutId,
+            type: PIN_DIRECTION.OUT,
+            x: 110,
+            y: 30,
+            parentId: chessmanId,
+          },
+        ])
+      );
+    },
+    [dispatch]
+  );
 };

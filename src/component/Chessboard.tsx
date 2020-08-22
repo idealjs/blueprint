@@ -19,6 +19,11 @@ const Chessboard: FC = () => {
     y: 0,
   });
 
+  const offsetContainer = useRef(offset);
+  useEffect(() => {
+    offsetContainer.current = offset;
+  }, [offset]);
+
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
@@ -64,12 +69,17 @@ const Chessboard: FC = () => {
 
   const addChessman = useAddChessman();
 
+  useCallback(() => {}, []);
+
   useEffect(() => {
     interact(ref.current!).dropzone({
       ondrop: (event) => {
         console.log("drop", event);
         if (event.relatedTarget.className === "menuItem") {
-          addChessman();
+          addChessman(
+            event.dragEvent.client.x - offsetContainer.current.x - 200,
+            event.dragEvent.client.y - offsetContainer.current.y
+          );
         }
         console.log("drop at chessboard");
       },
