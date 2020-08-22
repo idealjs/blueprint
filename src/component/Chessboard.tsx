@@ -2,6 +2,7 @@ import interact from "interactjs";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
+import { useAddChessman } from "../hook/test/useAddChessman";
 import { RootState } from "../reducer";
 import { chessmenSelector } from "../reducer/chessmen";
 import Chessman from "./Chessman";
@@ -61,6 +62,20 @@ const Chessboard: FC = () => {
     });
   }, []);
 
+  const addChessman = useAddChessman();
+
+  useEffect(() => {
+    interact(ref.current!).dropzone({
+      ondrop: (event) => {
+        console.log("drop", event);
+        if (event.relatedTarget.className === "menuItem") {
+          addChessman();
+        }
+        console.log("drop at chessboard");
+      },
+    });
+  }, [addChessman]);
+
   const onWheel = useCallback((event) => {
     console.log("onWheel", event.deltaY);
     event.persist();
@@ -69,10 +84,19 @@ const Chessboard: FC = () => {
 
   const onContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+    console.log(event.clientX);
+    console.log(event.clientY);
+  };
 
   return (
-    <svg ref={ref} height="100%" width="100%" onWheel={onWheel} onContextMenu={onContextMenu} style={{ touchAction: "none" }}>
+    <svg
+      ref={ref}
+      height="100%"
+      width="100%"
+      onWheel={onWheel}
+      onContextMenu={onContextMenu}
+      style={{ touchAction: "none" }}
+    >
       <g
         ref={gRef}
         transform={`translate(${offset.x}, ${offset.y}) scale(${scale})`}
