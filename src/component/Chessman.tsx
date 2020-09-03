@@ -1,5 +1,5 @@
 import interact from "interactjs";
-import React, { memo, useEffect, useRef } from "react";
+import React, { memo, RefObject,useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
@@ -7,7 +7,7 @@ import { chessmenSelector, updateChessman } from "../reducer/chessmen";
 import Pin from "./Pin";
 interface IProps {
   id: string;
-  svgRef: React.RefObject<SVGSVGElement>;
+  svgRef: RefObject<SVGSVGElement>;
 }
 const Chessman = memo((props: IProps) => {
   const { id, svgRef } = props;
@@ -25,6 +25,7 @@ const Chessman = memo((props: IProps) => {
   useEffect(() => {
     chessboardContainer.current = chessboard;
   }, [chessboard]);
+  console.log("current", x, y);
 
   useEffect(() => {
     let x1: number = 0;
@@ -32,10 +33,18 @@ const Chessman = memo((props: IProps) => {
     interact(ref.current!).draggable({
       listeners: {
         start: (event) => {
+          console.log(
+            "drag start",
+            x1,
+            y1,
+            ref.current?.getBoundingClientRect().left
+          );
           x1 = event.clientX0 - ref.current?.getBoundingClientRect().left!;
           y1 = event.clientY0 - ref.current?.getBoundingClientRect().top!;
         },
         move: (event) => {
+          console.log("drag move", x1, y1);
+
           dispatch(
             updateChessman({
               id: id,
@@ -63,20 +72,20 @@ const Chessman = memo((props: IProps) => {
   return (
     <g ref={ref} transform={`translate(${x}, ${y})`}>
       <rect
-        id={id}
-        width={width}
-        height={30}
-        style={{ fill: "black" }}
-        x="0"
-        y="0"
+        rx="15"
+        ry="15"
+        width={width + 2 * chessman!.border}
+        height={height + 2 * chessman!.border}
       />
       <rect
         id={id}
+        x={chessman!.border}
+        y={chessman!.border}
+        rx="10"
+        ry="10"
         width={width}
         height={height}
         style={{ fill: "wheat" }}
-        x="0"
-        y="20"
       />
       {chessman?.pins.map((pinId) => (
         <Pin svgRef={svgRef} id={pinId} key={pinId} />

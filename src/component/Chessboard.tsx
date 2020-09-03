@@ -13,7 +13,7 @@ const Chessboard: FC = () => {
   const chessmenIds = useSelector(
     (state: RootState) => chessmenSelector.selectIds(state) as string[]
   );
-  const ref = useRef<SVGSVGElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const gRef = useRef<SVGGElement>(null);
   const chessboard = useSelector((state: RootState) => state.chessboard);
   const chessboardContainer = useRef(chessboard);
@@ -27,11 +27,11 @@ const Chessboard: FC = () => {
     let y0: number = 0;
     let x1: number = 0;
     let y1: number = 0;
-    interact(ref.current!).draggable({
+    interact(svgRef.current!).draggable({
       listeners: {
         start: (event) => {
-          x1 = event.clientX0 - ref.current?.getBoundingClientRect().left!;
-          y1 = event.clientY0 - ref.current?.getBoundingClientRect().top!;
+          x1 = event.clientX0 - svgRef.current?.getBoundingClientRect().left!;
+          y1 = event.clientY0 - svgRef.current?.getBoundingClientRect().top!;
         },
         move: (event) => {
           dispatch(
@@ -39,12 +39,12 @@ const Chessboard: FC = () => {
               x:
                 x0 +
                 event.client.x -
-                ref.current?.getBoundingClientRect().left! -
+                svgRef.current?.getBoundingClientRect().left! -
                 x1,
               y:
                 y0 +
                 event.client.y -
-                ref.current?.getBoundingClientRect().top! -
+                svgRef.current?.getBoundingClientRect().top! -
                 y1,
             })
           );
@@ -53,12 +53,12 @@ const Chessboard: FC = () => {
           x0 =
             x0 +
             event.client.x -
-            ref.current?.getBoundingClientRect().left! -
+            svgRef.current?.getBoundingClientRect().left! -
             x1;
           y0 =
             y0 +
             event.client.y -
-            ref.current?.getBoundingClientRect().top! -
+            svgRef.current?.getBoundingClientRect().top! -
             y1;
         },
       },
@@ -70,12 +70,14 @@ const Chessboard: FC = () => {
   useCallback(() => {}, []);
 
   useEffect(() => {
-    interact(ref.current!).dropzone({
+    interact(svgRef.current!).dropzone({
       ondrop: (event) => {
         console.log("drop", event);
         if (event.relatedTarget.className === "menuItem") {
           addChessman(
-            event.dragEvent.client.x - chessboardContainer.current.x - 200,
+            event.dragEvent.client.x -
+              chessboardContainer.current.x -
+              svgRef.current!.getBoundingClientRect().left,
             event.dragEvent.client.y - chessboardContainer.current.y
           );
         }
@@ -102,9 +104,10 @@ const Chessboard: FC = () => {
     console.log(event.clientX);
     console.log(event.clientY);
   };
+
   return (
     <svg
-      ref={ref}
+      ref={svgRef}
       height="100%"
       width="100%"
       onWheel={onWheel}
@@ -116,7 +119,7 @@ const Chessboard: FC = () => {
         transform={`translate(${chessboard.x}, ${chessboard.y}) scale(${chessboard.k})`}
       >
         {chessmenIds.map((chessmanId) => (
-          <Chessman svgRef={ref} id={chessmanId} key={chessmanId} />
+          <Chessman svgRef={svgRef} id={chessmanId} key={chessmanId} />
         ))}
         <PathLayer />
       </g>

@@ -22,6 +22,7 @@ export const useAddChessman = () => {
           height: 90,
           x,
           y,
+          border: 5,
           pins: [pinInId, pinOutId],
         })
       );

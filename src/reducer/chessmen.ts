@@ -15,6 +15,7 @@ export interface IChessman {
   y: number;
   width: number;
   height: number;
+  border: number;
   pins: string[];
 }
 
