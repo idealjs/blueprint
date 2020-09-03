@@ -1,5 +1,5 @@
 import interact from "interactjs";
-import React, { useEffect, useRef } from "react";
+import React, { memo,useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
@@ -10,7 +10,7 @@ interface IProps {
   svgRef: React.RefObject<SVGSVGElement>;
 }
 
-const Pin = (props: IProps) => {
+const Pin = memo((props: IProps) => {
   const { id } = props;
   const ref = useRef<SVGGElement>(null);
   const dispatch = useDispatch();
@@ -59,6 +59,6 @@ const Pin = (props: IProps) => {
       <circle cx={pin?.x} cy={pin?.y} r={5} />
     </g>
   );
-};
+});
 
 export default Pin;

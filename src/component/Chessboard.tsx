@@ -1,9 +1,10 @@
 import interact from "interactjs";
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { FC, useCallback, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useAddChessman } from "../hook/test/useAddChessman";
 import { RootState } from "../reducer";
+import { updateChessboard } from "../reducer/chessboard";
 import { chessmenSelector } from "../reducer/chessmen";
 import Chessman from "./Chessman";
 import PathLayer from "./PathLayer";
@@ -14,17 +15,12 @@ const Chessboard: FC = () => {
   );
   const ref = useRef<SVGSVGElement>(null);
   const gRef = useRef<SVGGElement>(null);
-  const [offset, setOffset] = useState({
-    x: 0,
-    y: 0,
-  });
-
-  const offsetContainer = useRef(offset);
+  const chessboard = useSelector((state: RootState) => state.chessboard);
+  const chessboardContainer = useRef(chessboard);
+  const dispatch = useDispatch();
   useEffect(() => {
-    offsetContainer.current = offset;
-  }, [offset]);
-
-  const [scale, setScale] = useState(1);
+    chessboardContainer.current = chessboard;
+  }, [chessboard]);
 
   useEffect(() => {
     let x0: number = 0;
@@ -38,18 +34,20 @@ const Chessboard: FC = () => {
           y1 = event.clientY0 - ref.current?.getBoundingClientRect().top!;
         },
         move: (event) => {
-          setOffset((offset) => ({
-            x:
-              x0 +
-              event.client.x -
-              ref.current?.getBoundingClientRect().left! -
-              x1,
-            y:
-              y0 +
-              event.client.y -
-              ref.current?.getBoundingClientRect().top! -
-              y1,
-          }));
+          dispatch(
+            updateChessboard({
+              x:
+                x0 +
+                event.client.x -
+                ref.current?.getBoundingClientRect().left! -
+                x1,
+              y:
+                y0 +
+                event.client.y -
+                ref.current?.getBoundingClientRect().top! -
+                y1,
+            })
+          );
         },
         end: (event) => {
           x0 =
@@ -65,7 +63,7 @@ const Chessboard: FC = () => {
         },
       },
     });
-  }, []);
+  }, [dispatch]);
 
   const addChessman = useAddChessman();
 
@@ -77,8 +75,8 @@ const Chessboard: FC = () => {
         console.log("drop", event);
         if (event.relatedTarget.className === "menuItem") {
           addChessman(
-            event.dragEvent.client.x - offsetContainer.current.x - 200,
-            event.dragEvent.client.y - offsetContainer.current.y
+            event.dragEvent.client.x - chessboardContainer.current.x - 200,
+            event.dragEvent.client.y - chessboardContainer.current.y
           );
         }
         console.log("drop at chessboard");
@@ -86,18 +84,24 @@ const Chessboard: FC = () => {
     });
   }, [addChessman]);
 
-  const onWheel = useCallback((event) => {
-    console.log("onWheel", event.deltaY);
-    event.persist();
-    setScale((scale) => scale - event.deltaY / 200);
-  }, []);
+  const onWheel = useCallback(
+    (event) => {
+      console.log("onWheel", event.deltaY);
+      event.persist();
+      dispatch(
+        updateChessboard({
+          k: chessboardContainer.current.k - event.deltaY / 200,
+        })
+      );
+    },
+    [dispatch]
+  );
 
   const onContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
     console.log(event.clientX);
     console.log(event.clientY);
   };
-
   return (
     <svg
       ref={ref}
@@ -109,16 +113,10 @@ const Chessboard: FC = () => {
     >
       <g
         ref={gRef}
-        transform={`translate(${offset.x}, ${offset.y}) scale(${scale})`}
+        transform={`translate(${chessboard.x}, ${chessboard.y}) scale(${chessboard.k})`}
       >
         {chessmenIds.map((chessmanId) => (
-          <Chessman
-            svgRef={ref}
-            id={chessmanId}
-            key={chessmanId}
-            chessboardOffset={offset}
-            chessboardScale={scale}
-          />
+          <Chessman svgRef={ref} id={chessmanId} key={chessmanId} />
         ))}
         <PathLayer />
       </g>

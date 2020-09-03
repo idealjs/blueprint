@@ -1,11 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import { useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
 import { chessmenSelector } from "../reducer/chessmen";
 import { PIN_DIRECTION, pinsSelector } from "../reducer/pins";
 
-const PathLayer = () => {
+const PathLayer = memo(() => {
   const lines = useSelector((state: RootState) => {
     const chessmen = chessmenSelector.selectAll(state);
     return chessmen.flatMap((chessman) =>
@@ -41,6 +41,6 @@ const PathLayer = () => {
       ))}
     </g>
   );
-};
+});
 
 export default PathLayer;

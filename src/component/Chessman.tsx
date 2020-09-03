@@ -1,5 +1,5 @@
 import interact from "interactjs";
-import React, { useEffect, useRef } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
@@ -8,15 +8,9 @@ import Pin from "./Pin";
 interface IProps {
   id: string;
   svgRef: React.RefObject<SVGSVGElement>;
-  chessboardScale: number;
-  chessboardOffset: {
-    x: number;
-    y: number;
-  };
 }
-
-const Chessman = (props: IProps) => {
-  const { id, svgRef, chessboardOffset, chessboardScale } = props;
+const Chessman = memo((props: IProps) => {
+  const { id, svgRef } = props;
   const { x, y, height, width } = useSelector((state: RootState) =>
     chessmenSelector.selectById(state, id)
   )!;
@@ -25,6 +19,12 @@ const Chessman = (props: IProps) => {
   const chessman = useSelector((state: RootState) =>
     chessmenSelector.selectById(state, id)
   );
+
+  const chessboard = useSelector((state: RootState) => state.chessboard);
+  const chessboardContainer = useRef(chessboard);
+  useEffect(() => {
+    chessboardContainer.current = chessboard;
+  }, [chessboard]);
 
   useEffect(() => {
     let x1: number = 0;
@@ -43,15 +43,15 @@ const Chessman = (props: IProps) => {
                 x:
                   (event.client.x -
                     svgRef.current?.getBoundingClientRect().left! -
-                    chessboardOffset.x -
+                    chessboardContainer.current.x -
                     x1) /
-                  chessboardScale,
+                  chessboardContainer.current.k,
                 y:
                   (event.client.y -
                     svgRef.current?.getBoundingClientRect().top! -
-                    chessboardOffset.y -
+                    chessboardContainer.current.y -
                     y1) /
-                  chessboardScale,
+                  chessboardContainer.current.k,
               },
             })
           );
@@ -59,8 +59,7 @@ const Chessman = (props: IProps) => {
         end: () => {},
       },
     });
-  }, [chessboardOffset, chessboardScale, dispatch, id, svgRef]);
-
+  }, [dispatch, id, svgRef]);
   return (
     <g ref={ref} transform={`translate(${x}, ${y})`}>
       <rect
@@ -84,6 +83,6 @@ const Chessman = (props: IProps) => {
       ))}
     </g>
   );
-};
+});
 
 export default Chessman;

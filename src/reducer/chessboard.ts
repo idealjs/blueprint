@@ -14,7 +14,10 @@ const slice = createSlice({
     k: 1,
   },
   reducers: {
-    set: (state, action: { payload: Partial<IChessboard>; type: string }) => {
+    update: (
+      state,
+      action: { payload: Partial<IChessboard>; type: string }
+    ) => {
       return { ...state, ...action.payload };
     },
   },
@@ -22,4 +25,4 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export const { set: setChessboard } = slice.actions;
+export const { update: updateChessboard } = slice.actions;
