@@ -1,5 +1,5 @@
 import interact from "interactjs";
-import React, { memo, RefObject,useEffect, useRef } from "react";
+import React, { memo, RefObject, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
@@ -70,7 +70,7 @@ const Chessman = memo((props: IProps) => {
     });
   }, [dispatch, id, svgRef]);
   return (
-    <g ref={ref} transform={`translate(${x}, ${y})`}>
+    <g id={id} ref={ref} transform={`translate(${x}, ${y})`}>
       <rect
         rx="15"
         ry="15"
@@ -78,7 +78,6 @@ const Chessman = memo((props: IProps) => {
         height={height + 2 * chessman!.border}
       />
       <rect
-        id={id}
         x={chessman!.border}
         y={chessman!.border}
         rx="10"
