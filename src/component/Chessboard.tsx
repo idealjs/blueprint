@@ -75,10 +75,14 @@ const Chessboard: FC = () => {
         console.log("drop", event);
         if (event.relatedTarget.className === "menuItem") {
           addChessman(
-            event.dragEvent.client.x -
+            (event.dragEvent.client.x -
               chessboardContainer.current.x -
-              svgRef.current!.getBoundingClientRect().left,
-            event.dragEvent.client.y - chessboardContainer.current.y
+              svgRef.current!.getBoundingClientRect().left) /
+              chessboardContainer.current.k,
+            (event.dragEvent.client.y -
+              chessboardContainer.current.y -
+              svgRef.current!.getBoundingClientRect().top) /
+              chessboardContainer.current.k
           );
         }
         console.log("drop at chessboard");
