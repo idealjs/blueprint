@@ -112,7 +112,13 @@ const Chessboard: FC = () => {
       width="100%"
       onWheel={onWheel}
       onContextMenu={onContextMenu}
-      style={{ touchAction: "none" }}
+      style={{
+        touchAction: "none",
+        backgroundSize: "40px 40px",
+        backgroundPosition: `${chessboard.x}px ${chessboard.y}px`,
+        backgroundImage:
+          "linear-gradient(to right, #4F4E4F 1px, transparent 1px),linear-gradient(to bottom, #4F4E4F 1px, transparent 1px)",
+      }}
     >
       <g
         ref={gRef}
