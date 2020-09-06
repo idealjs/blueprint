@@ -114,7 +114,7 @@ const Chessboard: FC = () => {
       onContextMenu={onContextMenu}
       style={{
         touchAction: "none",
-        backgroundSize: "40px 40px",
+        backgroundSize: `${40 * chessboard.k}px ${40 * chessboard.k}px`,
         backgroundPosition: `${chessboard.x}px ${chessboard.y}px`,
         backgroundImage:
           "linear-gradient(to right, #4F4E4F 1px, transparent 1px),linear-gradient(to bottom, #4F4E4F 1px, transparent 1px)",
