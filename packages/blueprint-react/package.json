@@ -1,0 +1,7 @@
+{
+  "name": "@idealjs/blueprint-react",
+  "version": "0.1.1",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "devDependencies": {}
+}
