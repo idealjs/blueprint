@@ -1,11 +1,11 @@
+export interface DataType {
+  id: string;
+  type: BASE_TYPE | FunctionType | Map<string, DataType>;
+}
+
 export interface FunctionType {
   params: Map<number, DataType | FunctionType>;
   returnType: DataType | FunctionType;
-}
-
-export interface DataType {
-  id: string;
-  type: BASE_TYPE | Map<string, DataType | FunctionType>;
 }
 
 export enum BASE_TYPE {
