@@ -3,5 +3,10 @@
   "version": "0.1.1",
   "main": "src/index.ts",
   "license": "MIT",
-  "devDependencies": {}
+  "devDependencies": {
+    "@idealjs/blueprint": "^0.1.1"
+  },
+  "peerDependencies": {
+    "@idealjs/blueprint": "^0.1.1"
+  }
 }

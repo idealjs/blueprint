@@ -1,16 +1,26 @@
 import "./App.css";
 
-import { Chessboard } from "@idealjs/blueprint";
+import { Chessboard, Toolbox } from "@idealjs/blueprint";
 import { useEffect, useRef } from "react";
 
 function App() {
-  const ref = useRef<HTMLDivElement>(null);
+  const toolboxRef = useRef<HTMLDivElement>(null);
+  const chessboardRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    new Chessboard(ref.current!);
+    new Chessboard(chessboardRef.current!);
   }, []);
+
+  useEffect(() => {
+    new Toolbox(toolboxRef.current!);
+  }, []);
+
   return (
-    <div className="App" ref={ref}>
-      hello
+    <div
+      className="App"
+      style={{ height: "100vh", width: "100vw", display: "flex" }}
+    >
+      <div ref={toolboxRef}></div>
+      <div ref={chessboardRef}></div>
     </div>
   );
 }
