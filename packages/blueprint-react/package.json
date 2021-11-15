@@ -4,7 +4,8 @@
   "main": "src/index.ts",
   "license": "MIT",
   "devDependencies": {
-    "@idealjs/blueprint": "^0.1.1"
+    "@idealjs/blueprint": "^0.1.1",
+    "react": "^17.0.2"
   },
   "peerDependencies": {
     "@idealjs/blueprint": "^0.1.1"
