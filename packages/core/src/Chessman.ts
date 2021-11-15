@@ -1,26 +1,29 @@
-import { DataType, FunctionType } from "./type";
+import uniqid from "uniqid";
 
-class Chessman {}
+import { IPin } from "./Pin";
+import { IDataType, RequiredBy } from "./type";
+
+class Chessman implements IChessman {
+  id: string = uniqid();
+  type: IChessmanType;
+  pins: Map<string, IPin> = new Map();
+
+  constructor(chessman: RequiredBy<Partial<IChessman>, "type">) {
+    this.type = chessman.type;
+    if (chessman.id) this.id = chessman.id;
+    if (chessman.pins) this.pins = chessman.pins;
+  }
+}
 
 export default Chessman;
 
-interface IPin {
-  id: string;
-  type: PIN_TYPE;
-  parent: IChessman;
-  targetPin: IPin;
+interface IChessmanType {
+  isArray: boolean;
+  dataType: IDataType;
 }
 
-interface IChessman {
+export interface IChessman {
   id: string;
-  type: {
-    isArray: boolean;
-    dataType: DataType | FunctionType;
-  };
+  type: IChessmanType;
   pins: Map<string, IPin>;
-}
-
-enum PIN_TYPE {
-  IN = "IN",
-  OUT = "OUT",
 }
