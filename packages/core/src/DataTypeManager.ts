@@ -5,7 +5,7 @@ class DataTypeManager {
 
   constructor(dataTypeManager: IDataTypeManager) {
     dataTypeManager.dataTypeMap.forEach((dataType, key) => {
-      this.dataTypeMap.set(key, new DataType(this.dataTypeMap, dataType));
+      this.dataTypeMap.set(key, DataType.fromJSON(this, dataType));
     });
   }
 

@@ -6,10 +6,7 @@ class ChessmanType {
   public dataType: DataType;
   constructor(dataTypeManager: DataTypeManager, chessmanType: IChessmanType) {
     this.isArray = chessmanType.isArray;
-    this.dataType = new DataType(
-      dataTypeManager.dataTypeMap,
-      chessmanType.dataType
-    );
+    this.dataType = DataType.fromJSON(dataTypeManager, chessmanType.dataType);
   }
 
   toJSON(): IChessmanType {

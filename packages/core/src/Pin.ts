@@ -14,25 +14,32 @@ class Pin {
   constructor(
     chessboard: Chessboard,
     dataTypeManager: DataTypeManager,
-    pin: RequiredBy<Partial<IPin>, "type" | "parent">
+    pin: RequiredBy<Partial<IPin>, "id" | "type" | "parent">
   ) {
     this.type = pin.type;
-    let parent = chessboard.chessmanMap.get(pin.parent.id);
-    if (parent == null) {
-      parent = new Chessman(chessboard, dataTypeManager, pin.parent);
-      chessboard.chessmanMap.set(parent.id, parent);
-    }
+    let parent = Chessman.fromJSON(chessboard, dataTypeManager, pin.parent);
     this.parent = parent;
     if (pin.id) this.id = pin.id;
 
     if (pin.connected) {
       let connected = new Map<string, Pin>();
-      for (let [, value] of pin.connected) {
-        let pin = new Pin(chessboard, dataTypeManager, value);
-        connected.set(pin.id, pin);
-      }
+      pin.connected.forEach((value, key) => {
+        connected.set(key, Pin.fromJSON(chessboard, dataTypeManager, value));
+      });
       this.connected = connected;
     }
+  }
+
+  static fromJSON(
+    chessboard: Chessboard,
+    dataTypeManager: DataTypeManager,
+    pin: RequiredBy<Partial<IPin>, "id" | "type" | "parent">
+  ) {
+    const p = chessboard.pinMap.get(pin.id);
+    if (p != null) {
+      return p;
+    }
+    return new Pin(chessboard, dataTypeManager, pin);
   }
 
   toJSON(): IPin {
