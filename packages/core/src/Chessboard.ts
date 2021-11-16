@@ -1,8 +1,14 @@
 import { Chessman } from "..";
 import { IChessman } from "./Chessman";
+import Pin, { IPin } from "./Pin";
 
-class Chessboard implements IChessboard {
-  public chessmenMap = new Map<string, Chessman>();
+class Chessboard {
+  public x: number = 0;
+  public y: number = 0;
+  public k: number = 1;
+  public chessmanMap = new Map<string, Chessman>();
+  public pinMap = new Map<string, Pin>();
+
   constructor(target: HTMLElement) {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.style.height = "100%";
@@ -11,10 +17,33 @@ class Chessboard implements IChessboard {
   }
 
   addChessman(chessman: Chessman) {}
+
+  toJSON(): IChessboard {
+    const chessmanMap = new Map<string, IChessman>();
+    this.chessmanMap.forEach((chessman, key) => {
+      chessmanMap.set(key, chessman.toJSON());
+    });
+    const pinMap = new Map<string, IPin>();
+    this.pinMap.forEach((pin, key) => {
+      pinMap.set(key, pin.toJSON());
+    });
+
+    return {
+      x: this.x,
+      y: this.y,
+      k: this.k,
+      chessmanMap,
+      pinMap,
+    };
+  }
 }
 
 export default Chessboard;
 
 interface IChessboard {
-  chessmenMap: Map<string, IChessman>;
+  x: number;
+  y: number;
+  k: number;
+  chessmanMap: Map<string, IChessman>;
+  pinMap: Map<string, IPin>;
 }

@@ -1,25 +1,10 @@
-export interface IDataType {
-  id: string;
-  type: BASE_TYPE | IFunctionType | Map<string, IDataType>;
-}
-
-export interface IFunctionType {
-  params: Map<number, IDataType | IFunctionType>;
-  returnType: IDataType | IFunctionType;
-}
-
-export enum BASE_TYPE {
-  NUMBER = "NUMBER",
-  STRING = "STRING",
-  BOOLEAN = "BOOLEAN",
-  NULL = "NULL",
-}
+import { IDataType, IFunctionType } from "./DataType";
 
 export const isDataType = (type: any): type is IDataType => {
   return true;
 };
 
-export const isIFunctionType = (type: any): type is IFunctionType => {
+export const isFunctionType = (type: any): type is IFunctionType => {
   return true;
 };
 

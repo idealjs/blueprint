@@ -1,26 +1,40 @@
 import uniqid from "uniqid";
 
-import { IPin } from "./Pin";
-import { IDataType, RequiredBy } from "./type";
+import Chessboard from "./Chessboard";
+import ChessmanType, { IChessmanType } from "./ChessmanType";
+import DataTypeManager from "./DataTypeManager";
+import Pin, { IPin } from "./Pin";
+import { RequiredBy } from "./type";
 
-class Chessman implements IChessman {
+class Chessman {
   id: string = uniqid();
-  type: IChessmanType;
-  pins: Map<string, IPin> = new Map();
+  type: ChessmanType;
+  pins: Map<string, Pin> = new Map();
 
-  constructor(chessman: RequiredBy<Partial<IChessman>, "type">) {
-    this.type = chessman.type;
+  constructor(
+    chessboard: Chessboard,
+    dataTypeManager: DataTypeManager,
+    chessman: RequiredBy<Partial<IChessman>, "type">
+  ) {
+    this.type = new ChessmanType(dataTypeManager, chessman.type);
     if (chessman.id) this.id = chessman.id;
-    if (chessman.pins) this.pins = chessman.pins;
+    if (chessman.pins) {
+      chessman.pins.forEach((pin) => {
+        this.pins.set(pin.id, new Pin(chessboard, dataTypeManager, pin));
+      });
+    }
+  }
+
+  toJSON(): IChessman {
+    return {
+      id: this.id,
+      type: this.type,
+      pins: this.pins,
+    };
   }
 }
 
 export default Chessman;
-
-interface IChessmanType {
-  isArray: boolean;
-  dataType: IDataType;
-}
 
 export interface IChessman {
   id: string;
