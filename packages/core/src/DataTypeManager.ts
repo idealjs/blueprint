@@ -3,8 +3,8 @@ import DataType, { IDataType } from "./DataType";
 class DataTypeManager {
   public dataTypeMap = new Map<string, DataType>();
 
-  constructor(dataTypeManager: IDataTypeManager) {
-    dataTypeManager.dataTypeMap.forEach((dataType, key) => {
+  constructor(dataTypeManager?: IDataTypeManager) {
+    dataTypeManager?.dataTypeMap.forEach((dataType, key) => {
       this.dataTypeMap.set(key, DataType.fromJSON(this, dataType));
     });
   }

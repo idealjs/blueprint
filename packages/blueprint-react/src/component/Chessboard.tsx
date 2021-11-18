@@ -1,5 +1,6 @@
 import * as BP from "@idealjs/blueprint";
 import React, { FC, useCallback, useEffect, useRef } from "react";
+import { useDispatch,useSelector } from "react-redux";
 
 import { useAddChessman } from "../hook/test/useAddChessman";
 import { RootState } from "../reducer";
@@ -7,22 +8,21 @@ import { updateChessboard } from "../reducer/chessboard";
 import { chessmenSelector } from "../reducer/chessmen";
 import Chessman from "./Chessman";
 import PathLayer from "./PathLayer";
-interface IProps {
-  chessboard: BP.Chessboard;
-}
+
+interface IProps {}
 
 const Chessboard: FC<IProps> = (props) => {
-  const { children,chessboard } = props;
-  // const chessmenIds = useSelector(
-  //   (state: RootState) => chessmenSelector.selectIds(state) as string[]
-  // );
-  // const svgRef = useRef<SVGSVGElement>(null);
-  // const chessboard = useSelector((state: RootState) => state.chessboard);
-  // const chessboardContainer = useRef(chessboard);
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   chessboardContainer.current = chessboard;
-  // }, [chessboard]);
+  const { children } = props;
+  const chessmenIds = useSelector(
+    (state: RootState) => chessmenSelector.selectIds(state) as string[]
+  );
+  const svgRef = useRef<SVGSVGElement>(null);
+  const chessboard = useSelector((state: RootState) => state.chessboard);
+  const chessboardContainer = useRef(chessboard);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    chessboardContainer.current = chessboard;
+  }, [chessboard]);
 
   // useEffect(() => {
   //   let x0: number = 0;
@@ -129,10 +129,10 @@ const Chessboard: FC<IProps> = (props) => {
         transform={`translate(${chessboard.x}, ${chessboard.y}) scale(${chessboard.k})`}
       >
         {children}
-        {/* {chessmenIds.map((chessmanId) => (
+        {chessmenIds.map((chessmanId) => (
           <Chessman svgRef={svgRef} id={chessmanId} key={chessmanId} />
         ))}
-        <PathLayer /> */}
+        <PathLayer />
       </g>
     </svg>
   );

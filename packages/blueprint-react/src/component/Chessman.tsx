@@ -1,6 +1,5 @@
-import interact from "interactjs";
-import React, { memo, RefObject, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { memo, RefObject, useEffect, useRef } from "react";
+import { useDispatch,useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
 import { chessmenSelector, updateChessman } from "../reducer/chessmen";
@@ -25,50 +24,50 @@ const Chessman = memo((props: IProps) => {
   useEffect(() => {
     chessboardContainer.current = chessboard;
   }, [chessboard]);
-  console.log("current", x, y);
 
-  useEffect(() => {
-    let x1: number = 0;
-    let y1: number = 0;
-    interact(ref.current!).draggable({
-      listeners: {
-        start: (event) => {
-          console.log(
-            "drag start",
-            x1,
-            y1,
-            ref.current?.getBoundingClientRect().left
-          );
-          x1 = event.clientX0 - ref.current?.getBoundingClientRect().left!;
-          y1 = event.clientY0 - ref.current?.getBoundingClientRect().top!;
-        },
-        move: (event) => {
-          console.log("drag move", x1, y1);
+  // useEffect(() => {
+  //   let x1: number = 0;
+  //   let y1: number = 0;
+  //   interact(ref.current!).draggable({
+  //     listeners: {
+  //       start: (event) => {
+  //         console.log(
+  //           "drag start",
+  //           x1,
+  //           y1,
+  //           ref.current?.getBoundingClientRect().left
+  //         );
+  //         x1 = event.clientX0 - ref.current?.getBoundingClientRect().left!;
+  //         y1 = event.clientY0 - ref.current?.getBoundingClientRect().top!;
+  //       },
+  //       move: (event) => {
+  //         console.log("drag move", x1, y1);
 
-          dispatch(
-            updateChessman({
-              id: id,
-              changes: {
-                x:
-                  (event.client.x -
-                    svgRef.current?.getBoundingClientRect().left! -
-                    chessboardContainer.current.x -
-                    x1) /
-                  chessboardContainer.current.k,
-                y:
-                  (event.client.y -
-                    svgRef.current?.getBoundingClientRect().top! -
-                    chessboardContainer.current.y -
-                    y1) /
-                  chessboardContainer.current.k,
-              },
-            })
-          );
-        },
-        end: () => {},
-      },
-    });
-  }, [dispatch, id, svgRef]);
+  //         dispatch(
+  //           updateChessman({
+  //             id: id,
+  //             changes: {
+  //               x:
+  //                 (event.client.x -
+  //                   svgRef.current?.getBoundingClientRect().left! -
+  //                   chessboardContainer.current.x -
+  //                   x1) /
+  //                 chessboardContainer.current.k,
+  //               y:
+  //                 (event.client.y -
+  //                   svgRef.current?.getBoundingClientRect().top! -
+  //                   chessboardContainer.current.y -
+  //                   y1) /
+  //                 chessboardContainer.current.k,
+  //             },
+  //           })
+  //         );
+  //       },
+  //       end: () => {},
+  //     },
+  //   });
+  // }, [dispatch, id, svgRef]);
+
   return (
     <g id={id} ref={ref} transform={`translate(${x}, ${y})`}>
       <rect

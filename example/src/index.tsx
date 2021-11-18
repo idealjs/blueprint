@@ -1,5 +1,6 @@
 import "./index.css";
 
+import { BoardProvider } from "@idealjs/blueprint-react";
 import React from "react";
 import ReactDOM from "react-dom";
 
@@ -8,7 +9,9 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BoardProvider>
+      <App />
+    </BoardProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
