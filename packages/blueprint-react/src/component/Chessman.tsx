@@ -1,5 +1,7 @@
+import { DND_EVENT } from "@idealjs/drag-drop";
+import { useDnd } from "@idealjs/drag-drop-react";
 import { memo, RefObject, useEffect, useRef } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
 import { chessmenSelector, updateChessman } from "../reducer/chessmen";
@@ -10,10 +12,12 @@ interface IProps {
 }
 const Chessman = memo((props: IProps) => {
   const { id, svgRef } = props;
+
+  const ref = useRef<SVGRectElement>(null);
+
   const { x, y, height, width } = useSelector((state: RootState) =>
     chessmenSelector.selectById(state, id)
   )!;
-  const ref = useRef<SVGRectElement>(null);
   const dispatch = useDispatch();
   const chessman = useSelector((state: RootState) =>
     chessmenSelector.selectById(state, id)
@@ -24,6 +28,21 @@ const Chessman = memo((props: IProps) => {
   useEffect(() => {
     chessboardContainer.current = chessboard;
   }, [chessboard]);
+
+  const dnd = useDnd();
+
+  useEffect(() => {
+    if (ref.current) {
+      const listenable = dnd
+        .draggable(ref.current)
+        .addListener(DND_EVENT.DRAG, (payload) => {
+          console.log("test test", payload);
+        });
+      return () => {
+        listenable.removeEleListeners().removeAllListeners();
+      };
+    }
+  }, [dnd]);
 
   // useEffect(() => {
   //   let x1: number = 0;

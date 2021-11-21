@@ -1,6 +1,8 @@
 import * as BP from "@idealjs/blueprint";
+import { DND_EVENT, IDropData } from "@idealjs/drag-drop";
+import { useDnd } from "@idealjs/drag-drop-react";
 import React, { FC, useCallback, useEffect, useRef } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useAddChessman } from "../hook/test/useAddChessman";
 import { RootState } from "../reducer";
@@ -8,7 +10,6 @@ import { updateChessboard } from "../reducer/chessboard";
 import { chessmenSelector } from "../reducer/chessmen";
 import Chessman from "./Chessman";
 import PathLayer from "./PathLayer";
-
 interface IProps {}
 
 const Chessboard: FC<IProps> = (props) => {
@@ -18,56 +19,65 @@ const Chessboard: FC<IProps> = (props) => {
   );
   const svgRef = useRef<SVGSVGElement>(null);
   const chessboard = useSelector((state: RootState) => state.chessboard);
-  const chessboardContainer = useRef(chessboard);
+  const chessboardRef = useRef(chessboard);
   const dispatch = useDispatch();
+  const dnd = useDnd();
+  const addChessman = useAddChessman();
+
   useEffect(() => {
-    chessboardContainer.current = chessboard;
+    chessboardRef.current = chessboard;
   }, [chessboard]);
 
-  // useEffect(() => {
-  //   let x0: number = 0;
-  //   let y0: number = 0;
-  //   let x1: number = 0;
-  //   let y1: number = 0;
-  //   interact(svgRef.current!).draggable({
-  //     listeners: {
-  //       start: (event) => {
-  //         x1 = event.clientX0 - svgRef.current?.getBoundingClientRect().left!;
-  //         y1 = event.clientY0 - svgRef.current?.getBoundingClientRect().top!;
-  //       },
-  //       move: (event) => {
-  //         dispatch(
-  //           updateChessboard({
-  //             x:
-  //               x0 +
-  //               event.client.x -
-  //               svgRef.current?.getBoundingClientRect().left! -
-  //               x1,
-  //             y:
-  //               y0 +
-  //               event.client.y -
-  //               svgRef.current?.getBoundingClientRect().top! -
-  //               y1,
-  //           })
-  //         );
-  //       },
-  //       end: (event) => {
-  //         x0 =
-  //           x0 +
-  //           event.client.x -
-  //           svgRef.current?.getBoundingClientRect().left! -
-  //           x1;
-  //         y0 =
-  //           y0 +
-  //           event.client.y -
-  //           svgRef.current?.getBoundingClientRect().top! -
-  //           y1;
-  //       },
-  //     },
-  //   });
-  // }, [dispatch]);
+  useEffect(() => {
+    if (svgRef.current) {
+      let x = 0;
+      let y = 0;
+      const listenable = dnd
+        .draggable(svgRef.current)
+        .addListener(DND_EVENT.DRAG_START, (payload) => {
+          x = chessboardRef.current.x;
+          y = chessboardRef.current.y;
+        })
+        .addListener(DND_EVENT.DRAG, (payload) => {
+          console.log("test test drag chessboard", payload);
+          dispatch(
+            updateChessboard({
+              x: x + payload.offset.x,
+              y: y + payload.offset.y,
+            })
+          );
+        });
 
-  // const addChessman = useAddChessman();
+      return () => {
+        listenable.removeEleListeners().removeAllListeners();
+      };
+    }
+  }, [dispatch, dnd]);
+
+  useEffect(() => {
+    if (svgRef.current) {
+      const listenable = dnd.droppable(svgRef.current).addListener(
+        DND_EVENT.DROP,
+        (
+          payload: IDropData<{
+            id: string;
+          }>
+        ) => {
+          console.log("drop at chessboard", payload);
+          if (payload.item?.id === "menu-chessman") {
+            addChessman(
+              payload.clientPosition.x - chessboardRef.current.x,
+              payload.clientPosition.y - chessboardRef.current.y
+            );
+          }
+        }
+      );
+
+      return () => {
+        listenable.removeEleListeners().removeAllListeners();
+      };
+    }
+  }, [addChessman, dnd]);
 
   // useCallback(() => {}, []);
 
@@ -78,13 +88,13 @@ const Chessboard: FC<IProps> = (props) => {
   //       if (event.relatedTarget.className === "menuItem") {
   //         addChessman(
   //           (event.dragEvent.client.x -
-  //             chessboardContainer.current.x -
+  //             chessboardRef.current.x -
   //             svgRef.current!.getBoundingClientRect().left) /
-  //             chessboardContainer.current.k,
+  //             chessboardRef.current.k,
   //           (event.dragEvent.client.y -
-  //             chessboardContainer.current.y -
+  //             chessboardRef.current.y -
   //             svgRef.current!.getBoundingClientRect().top) /
-  //             chessboardContainer.current.k
+  //             chessboardRef.current.k
   //         );
   //       }
   //       console.log("drop at chessboard");
@@ -98,7 +108,7 @@ const Chessboard: FC<IProps> = (props) => {
   //     event.persist();
   //     dispatch(
   //       updateChessboard({
-  //         k: chessboardContainer.current.k - event.deltaY / 200,
+  //         k: chessboardRef.current.k - event.deltaY / 200,
   //       })
   //     );
   //   },
@@ -113,6 +123,7 @@ const Chessboard: FC<IProps> = (props) => {
 
   return (
     <svg
+      ref={svgRef}
       height="100%"
       width="100%"
       // onWheel={onWheel}

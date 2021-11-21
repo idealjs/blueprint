@@ -1,7 +1,20 @@
+import { DND_EVENT } from "@idealjs/drag-drop";
+import { useDnd } from "@idealjs/drag-drop-react";
 import React, { useEffect, useRef } from "react";
 
 const MenuItem = () => {
   const ref = useRef(null);
+  const dnd = useDnd();
+
+  useEffect(() => {
+    if (ref.current) {
+      dnd
+        .draggable(ref.current, false, { item: { id: "menu-chessman" } })
+        .addListener(DND_EVENT.DRAG, () => {
+          console.log("test test drag item");
+        });
+    }
+  }, [dnd]);
 
   // useEffect(() => {
   //   interact(ref.current!).draggable({
