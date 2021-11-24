@@ -1,7 +1,13 @@
-import * as BP from "@idealjs/blueprint";
 import { DND_EVENT, IDropData } from "@idealjs/drag-drop";
 import { useDnd } from "@idealjs/drag-drop-react";
-import React, { FC, useCallback, useEffect, useRef } from "react";
+import {
+  EventHandler,
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  WheelEvent,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useAddChessman } from "../hook/test/useAddChessman";
@@ -56,6 +62,14 @@ const Chessboard: FC<IProps> = (props) => {
 
   useEffect(() => {
     if (svgRef.current) {
+      let svgOffset: {
+        x: number;
+        y: number;
+      } = {
+        x: svgRef.current.getBoundingClientRect().left,
+        y: svgRef.current.getBoundingClientRect().top,
+      };
+
       const listenable = dnd.droppable(svgRef.current).addListener(
         DND_EVENT.DROP,
         (
@@ -63,11 +77,16 @@ const Chessboard: FC<IProps> = (props) => {
             id: string;
           }>
         ) => {
-          console.log("drop at chessboard", payload);
           if (payload.item?.id === "menu-chessman") {
             addChessman(
-              payload.clientPosition.x - chessboardRef.current.x,
-              payload.clientPosition.y - chessboardRef.current.y
+              (payload.clientPosition.x -
+                chessboardRef.current.x -
+                svgOffset.x) /
+                chessboardRef.current.k,
+              (payload.clientPosition.y -
+                chessboardRef.current.y -
+                svgOffset.y) /
+                chessboardRef.current.k
             );
           }
         }
@@ -79,41 +98,18 @@ const Chessboard: FC<IProps> = (props) => {
     }
   }, [addChessman, dnd]);
 
-  // useCallback(() => {}, []);
-
-  // useEffect(() => {
-  //   interact(svgRef.current!).dropzone({
-  //     ondrop: (event) => {
-  //       console.log("drop", event);
-  //       if (event.relatedTarget.className === "menuItem") {
-  //         addChessman(
-  //           (event.dragEvent.client.x -
-  //             chessboardRef.current.x -
-  //             svgRef.current!.getBoundingClientRect().left) /
-  //             chessboardRef.current.k,
-  //           (event.dragEvent.client.y -
-  //             chessboardRef.current.y -
-  //             svgRef.current!.getBoundingClientRect().top) /
-  //             chessboardRef.current.k
-  //         );
-  //       }
-  //       console.log("drop at chessboard");
-  //     },
-  //   });
-  // }, [addChessman]);
-
-  // const onWheel = useCallback(
-  //   (event) => {
-  //     console.log("onWheel", event.deltaY);
-  //     event.persist();
-  //     dispatch(
-  //       updateChessboard({
-  //         k: chessboardRef.current.k - event.deltaY / 200,
-  //       })
-  //     );
-  //   },
-  //   [dispatch]
-  // );
+  const onWheel: EventHandler<WheelEvent> = useCallback(
+    (event) => {
+      console.log("onWheel", event.deltaY);
+      // event.persist();
+      dispatch(
+        updateChessboard({
+          k: chessboardRef.current.k - Math.sign(event.deltaY) / 10,
+        })
+      );
+    },
+    [dispatch]
+  );
 
   // const onContextMenu = (event: React.MouseEvent) => {
   //   event.preventDefault();
@@ -126,7 +122,7 @@ const Chessboard: FC<IProps> = (props) => {
       ref={svgRef}
       height="100%"
       width="100%"
-      // onWheel={onWheel}
+      onWheel={onWheel}
       // onContextMenu={onContextMenu}
       style={{
         touchAction: "none",

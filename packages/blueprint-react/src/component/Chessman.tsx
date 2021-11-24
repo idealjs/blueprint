@@ -32,60 +32,62 @@ const Chessman = memo((props: IProps) => {
   const dnd = useDnd();
 
   useEffect(() => {
-    if (ref.current) {
+    if (ref.current && svgRef.current) {
+      let originPos: {
+        x: number;
+        y: number;
+      } = {
+        x: ref.current.getBoundingClientRect().left,
+        y: ref.current.getBoundingClientRect().top,
+      };
+
+      let svgOffset: {
+        x: number;
+        y: number;
+      } = {
+        x: svgRef.current.getBoundingClientRect().left,
+        y: svgRef.current.getBoundingClientRect().top,
+      };
+
       const listenable = dnd
         .draggable(ref.current)
+        .addListener(DND_EVENT.DRAG_START, () => {
+          originPos = {
+            x: ref.current!.getBoundingClientRect().left,
+            y: ref.current!.getBoundingClientRect().top,
+          };
+          svgOffset = {
+            x: svgRef.current!.getBoundingClientRect().left,
+            y: svgRef.current!.getBoundingClientRect().top,
+          };
+        })
         .addListener(DND_EVENT.DRAG, (payload) => {
+          dispatch(
+            updateChessman({
+              id: id,
+              changes: {
+                x:
+                  (originPos.x -
+                    svgOffset.x -
+                    chessboardContainer.current.x +
+                    payload.offset.x) /
+                  chessboardContainer.current.k,
+                y:
+                  (originPos.y -
+                    svgOffset.y -
+                    chessboardContainer.current.y +
+                    payload.offset.y) /
+                  chessboardContainer.current.k,
+              },
+            })
+          );
           console.log("test test", payload);
         });
       return () => {
         listenable.removeEleListeners().removeAllListeners();
       };
     }
-  }, [dnd]);
-
-  // useEffect(() => {
-  //   let x1: number = 0;
-  //   let y1: number = 0;
-  //   interact(ref.current!).draggable({
-  //     listeners: {
-  //       start: (event) => {
-  //         console.log(
-  //           "drag start",
-  //           x1,
-  //           y1,
-  //           ref.current?.getBoundingClientRect().left
-  //         );
-  //         x1 = event.clientX0 - ref.current?.getBoundingClientRect().left!;
-  //         y1 = event.clientY0 - ref.current?.getBoundingClientRect().top!;
-  //       },
-  //       move: (event) => {
-  //         console.log("drag move", x1, y1);
-
-  //         dispatch(
-  //           updateChessman({
-  //             id: id,
-  //             changes: {
-  //               x:
-  //                 (event.client.x -
-  //                   svgRef.current?.getBoundingClientRect().left! -
-  //                   chessboardContainer.current.x -
-  //                   x1) /
-  //                 chessboardContainer.current.k,
-  //               y:
-  //                 (event.client.y -
-  //                   svgRef.current?.getBoundingClientRect().top! -
-  //                   chessboardContainer.current.y -
-  //                   y1) /
-  //                 chessboardContainer.current.k,
-  //             },
-  //           })
-  //         );
-  //       },
-  //       end: () => {},
-  //     },
-  //   });
-  // }, [dispatch, id, svgRef]);
+  }, [dispatch, dnd, id, svgRef]);
 
   return (
     <g id={id} ref={ref} transform={`translate(${x}, ${y})`}>

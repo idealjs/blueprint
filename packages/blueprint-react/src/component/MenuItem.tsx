@@ -9,7 +9,7 @@ const MenuItem = () => {
   useEffect(() => {
     if (ref.current) {
       dnd
-        .draggable(ref.current, false, { item: { id: "menu-chessman" } })
+        .draggable(ref.current, { item: { id: "menu-chessman" } })
         .addListener(DND_EVENT.DRAG, () => {
           console.log("test test drag item");
         });
