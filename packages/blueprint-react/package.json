@@ -1,10 +1,10 @@
 {
   "name": "@idealjs/blueprint-react",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "src/index.ts",
   "license": "MIT",
   "devDependencies": {
-    "@idealjs/blueprint": "^0.1.1",
+    "@idealjs/blueprint": "^0.2.0",
     "@idealjs/drag-drop": "^1.6.1",
     "@idealjs/drag-drop-react": "^1.6.1",
     "@reduxjs/toolkit": "^1.6.2",
@@ -14,6 +14,5 @@
   },
   "peerDependencies": {
     "@idealjs/blueprint": "^0.1.1"
-  },
-  "dependencies": {}
+  }
 }
