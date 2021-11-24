@@ -137,7 +137,12 @@ const Chessboard: FC<IProps> = (props) => {
       >
         {children}
         {chessmenIds.map((chessmanId) => (
-          <Chessman svgRef={svgRef} id={chessmanId} key={chessmanId} />
+          <Chessman
+            svgRef={svgRef}
+            chessboardRef={chessboardRef}
+            id={chessmanId}
+            key={chessmanId}
+          />
         ))}
         <PathLayer />
       </g>
