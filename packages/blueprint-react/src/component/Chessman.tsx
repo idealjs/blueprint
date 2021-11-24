@@ -15,7 +15,6 @@ interface IProps {
 const Chessman = memo(
   (props: IProps) => {
     const { id, svgRef, chessboardRef } = props;
-    console.log("test test", id);
     const ref = useRef<SVGRectElement>(null);
 
     const { x, y, height, width } = useSelector((state: RootState) =>
@@ -103,7 +102,7 @@ const Chessman = memo(
           style={{ fill: "wheat" }}
         />
         {chessman?.pins.map((pinId) => (
-          <Pin svgRef={svgRef} id={pinId} key={pinId} />
+          <Pin id={pinId} key={pinId} />
         ))}
       </g>
     );

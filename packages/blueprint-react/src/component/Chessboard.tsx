@@ -74,10 +74,10 @@ const Chessboard: FC<IProps> = (props) => {
         DND_EVENT.DROP,
         (
           payload: IDropData<{
-            id: string;
+            type: string;
           }>
         ) => {
-          if (payload.item?.id === "menu-chessman") {
+          if (payload.item?.type === "menu-chessman") {
             addChessman(
               (payload.clientPosition.x -
                 chessboardRef.current.x -
