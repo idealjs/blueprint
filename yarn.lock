@@ -1325,15 +1325,15 @@
   resolved "http://mirrors.cloud.tencent.com/npm/@hutson%2fparse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
-"@idealjs/drag-drop-react@^1.6.0":
-  version "1.6.0"
-  resolved "http://mirrors.cloud.tencent.com/npm/@idealjs%2fdrag-drop-react/-/drag-drop-react-1.6.0.tgz#f5c53f04e0e1d08a3aefd4ae90580151462e278f"
-  integrity sha512-keHdhTFdKGPK4Yh5hUUyZ65crFtxCIscIxWICxI+T91PYl49UUY4DQfuyKNe0gT0VfhADsMOPgv4RU3uRP3hNA==
+"@idealjs/drag-drop-react@^1.6.1":
+  version "1.6.1"
+  resolved "http://mirrors.cloud.tencent.com/npm/@idealjs%2fdrag-drop-react/-/drag-drop-react-1.6.1.tgz#909b946465ffdc1a3ee5411ce7825831807b0920"
+  integrity sha512-4rX4qZ7GxZEK87Tgw3/EG9YCyosKOfLJWx4J5B9WG1bdvgdgvk2oYUpGfoUnpb8eCYS2FBOhSO5LiqK+Up06Zg==
 
-"@idealjs/drag-drop@^1.6.0":
-  version "1.6.0"
-  resolved "http://mirrors.cloud.tencent.com/npm/@idealjs%2fdrag-drop/-/drag-drop-1.6.0.tgz#2712ba64b662178cfc6eeeee55d835b085d9c12c"
-  integrity sha512-bqtgMHl+jgX7vjalAZJNLqCfW3vvHGFyFP/57L01SoEV7aFwD4YeUEbc37AqnvF+kcB2zWpn5upbgyxqPHx1hw==
+"@idealjs/drag-drop@^1.6.1":
+  version "1.6.1"
+  resolved "http://mirrors.cloud.tencent.com/npm/@idealjs%2fdrag-drop/-/drag-drop-1.6.1.tgz#6be5e97ae47004c0aeac32971e6ec2aa1b903866"
+  integrity sha512-pBzcmQFHrfTaX0bkxJdGesgVdJrchoMmwmz0liJy6WVujmgk7H+T1s5zeKZbDJWG2bs1G/hxRzBxQLwSjWy/ug==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
