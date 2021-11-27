@@ -7,7 +7,7 @@ import { RequiredBy } from "./type";
 class Chessman {
   id: string;
   type: ChessmanType;
-  pins: Map<string, Pin> = new Map();
+  pinMap: Map<string, Pin> = new Map();
 
   constructor(
     chessboard: Chessboard,
@@ -16,9 +16,9 @@ class Chessman {
   ) {
     this.id = chessman.id;
     this.type = new ChessmanType(dataTypeManager, chessman.type);
-    if (chessman.pins) {
-      chessman.pins.forEach((pin) => {
-        this.pins.set(pin.id, Pin.fromJSON(chessboard, dataTypeManager, pin));
+    if (chessman.pinMap) {
+      chessman.pinMap.forEach((pin) => {
+        this.pinMap.set(pin.id, Pin.fromJSON(chessboard, dataTypeManager, pin));
       });
     }
   }
@@ -36,10 +36,15 @@ class Chessman {
   }
 
   toJSON(): IChessman {
+    const pinMap = new Map<string, IPin>();
+    this.pinMap.forEach((pin, key) => {
+      pinMap.set(key, pin.toJSON());
+    });
+
     return {
       id: this.id,
       type: this.type.toJSON(),
-      pins: this.pins,
+      pinMap,
     };
   }
 }
@@ -49,5 +54,5 @@ export default Chessman;
 export interface IChessman {
   id: string;
   type: IChessmanType;
-  pins: Map<string, IPin>;
+  pinMap: Map<string, IPin>;
 }

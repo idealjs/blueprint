@@ -12,7 +12,7 @@ class ChessmanType {
   toJSON(): IChessmanType {
     return {
       isArray: this.isArray,
-      dataType: this.dataType,
+      dataType: this.dataType.toJSON(),
     };
   }
 }

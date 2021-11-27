@@ -26,7 +26,7 @@ class DataType implements IDataType {
 
   toJSON(): IDataType {
     if (this.type instanceof Map) {
-      let type = new Map<string, IDataType>();
+      const type = new Map<string, IDataType>();
       this.type.forEach((value, key: string) => {
         type.set(key, value.toJSON());
       });
@@ -35,6 +35,7 @@ class DataType implements IDataType {
         type,
       };
     }
+
     return {
       id: this.id,
       type: this.type,

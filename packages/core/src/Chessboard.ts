@@ -55,6 +55,7 @@ class Chessboard {
     this.chessmanMap.forEach((chessman, key) => {
       chessmanMap.set(key, chessman.toJSON());
     });
+
     const pinMap = new Map<string, IPin>();
     this.pinMap.forEach((pin, key) => {
       pinMap.set(key, pin.toJSON());

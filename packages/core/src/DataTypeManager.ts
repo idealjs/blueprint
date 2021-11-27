@@ -10,7 +10,7 @@ class DataTypeManager {
   }
 
   toJSON(): IDataTypeManager {
-    let dataTypeMap = new Map<string, IDataType>();
+    const dataTypeMap = new Map<string, IDataType>();
     this.dataTypeMap.forEach((dataType, key) => {
       dataTypeMap.set(key, dataType.toJSON());
     });
