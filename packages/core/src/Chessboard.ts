@@ -12,43 +12,25 @@ class Chessboard {
   public dataTypeManager: DataTypeManager;
   constructor(
     dataTypeManager: DataTypeManager,
-    chessboard: Partial<IChessboard>
+    chessboard?: Partial<IChessboard>
   ) {
     this.dataTypeManager = dataTypeManager;
-    if (chessboard.x) this.x = chessboard.x;
-    if (chessboard.y) this.y = chessboard.y;
-    if (chessboard.k) this.k = chessboard.k;
-    if (chessboard.chessmanMap) {
+    if (chessboard?.x) this.x = chessboard.x;
+    if (chessboard?.y) this.y = chessboard.y;
+    if (chessboard?.k) this.k = chessboard.k;
+    if (chessboard?.chessmanMap) {
       chessboard.chessmanMap.forEach((value, key) => {
-        this.chessmanMap.set(
-          key,
-          Chessman.fromJSON(this, this.dataTypeManager, value)
-        );
+        this.chessmanMap.set(key, Chessman.fromJSON(this, value));
       });
     }
-    if (chessboard.pinMap) {
+    if (chessboard?.pinMap) {
       chessboard.pinMap.forEach((value, key) => {
-        this.pinMap.set(key, Pin.fromJSON(this, this.dataTypeManager, value));
+        this.pinMap.set(key, Pin.fromJSON(this, value));
       });
     }
   }
 
   addChessman(chessman: Chessman) {}
-
-  fromJSON(json: IChessboard) {
-    this.x = json.x;
-    this.y = json.y;
-    this.k = json.k;
-    json.chessmanMap.forEach((value, key) => {
-      this.chessmanMap.set(
-        key,
-        Chessman.fromJSON(this, this.dataTypeManager, value)
-      );
-    });
-    json.pinMap.forEach((value, key) => {
-      this.pinMap.set(key, Pin.fromJSON(this, this.dataTypeManager, value));
-    });
-  }
 
   toJSON(): IChessboard {
     const chessmanMap = new Map<string, IChessman>();
@@ -73,7 +55,7 @@ class Chessboard {
 
 export default Chessboard;
 
-interface IChessboard {
+export interface IChessboard {
   x: number;
   y: number;
   k: number;

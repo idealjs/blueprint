@@ -41,28 +41,28 @@ const Pin = memo((props: IProps) => {
           }>
         ) => {
           console.log("test test", payload);
-          if (payload.item?.type === "chessman-pin" && payload.item?.id) {
-            dispatch(
-              updateManyPin([
-                {
-                  id: payload.item.id,
-                  changes: {
-                    to: {
-                      pinId: id,
-                    },
-                  },
-                },
-                {
-                  id: id,
-                  changes: {
-                    to: {
-                      pinId: payload.item.id,
-                    },
-                  },
-                },
-              ])
-            );
-          }
+          // if (payload.item?.type === "chessman-pin" && payload.item?.id) {
+          //   dispatch(
+          //     updateManyPin([
+          //       {
+          //         id: payload.item.id,
+          //         changes: {
+          //           to: {
+          //             pinId: id,
+          //           },
+          //         },
+          //       },
+          //       {
+          //         id: id,
+          //         changes: {
+          //           to: {
+          //             pinId: payload.item.id,
+          //           },
+          //         },
+          //       },
+          //     ])
+          //   );
+          // }
         }
       );
       return () => {

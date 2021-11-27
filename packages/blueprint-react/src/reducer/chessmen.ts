@@ -1,23 +1,7 @@
+import { IChessman } from "@idealjs/blueprint";
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from ".";
-
-export enum CHESSMAN_TYPE {
-  START = "START",
-  VARIABLE = "VARIABLE",
-  FUNCTION = "FUNCTION",
-}
-
-export interface IChessman {
-  id: string;
-  type: CHESSMAN_TYPE;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  border: number;
-  pins: string[];
-}
 
 export const chessmenAdapter = createEntityAdapter<IChessman>({
   selectId: (chessman) => chessman.id,

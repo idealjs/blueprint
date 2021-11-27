@@ -1,17 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { IChessboard } from "@idealjs/blueprint";
+import { createSlice, SliceCaseReducers } from "@reduxjs/toolkit";
 
-export interface IChessboard {
-  x: number;
-  y: number;
-  k: number;
-}
-
-const slice = createSlice({
+const slice = createSlice<IChessboard, SliceCaseReducers<IChessboard>, string>({
   name: "chessboard",
   initialState: {
     x: 0,
     y: 0,
     k: 1,
+    chessmanMap: new Map(),
+    pinMap: new Map(),
   },
   reducers: {
     update: (

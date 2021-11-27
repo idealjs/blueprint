@@ -1,10 +1,10 @@
+import { IChessboard } from "@idealjs/blueprint";
 import { DND_EVENT } from "@idealjs/drag-drop";
 import { useDnd } from "@idealjs/drag-drop-react";
 import { memo, RefObject, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
-import { IChessboard } from "../reducer/chessboard";
 import { chessmenSelector, updateChessman } from "../reducer/chessmen";
 import Pin from "./Pin";
 interface IProps {
@@ -17,7 +17,7 @@ const Chessman = memo(
     const { id, svgRef, chessboardRef } = props;
     const ref = useRef<SVGRectElement>(null);
 
-    const { x, y, height, width } = useSelector((state: RootState) =>
+    const { x, y } = useSelector((state: RootState) =>
       chessmenSelector.selectById(state, id)
     )!;
     const dispatch = useDispatch();
@@ -86,24 +86,19 @@ const Chessman = memo(
 
     return (
       <g id={id} ref={ref} transform={`translate(${x}, ${y})`}>
+        <rect rx="15" ry="15" width={10} height={10} />
         <rect
-          rx="15"
-          ry="15"
-          width={width + 2 * chessman!.border}
-          height={height + 2 * chessman!.border}
-        />
-        <rect
-          x={chessman!.border}
-          y={chessman!.border}
+          x={10}
+          y={10}
           rx="10"
           ry="10"
-          width={width}
-          height={height}
+          width={10}
+          height={10}
           style={{ fill: "wheat" }}
         />
-        {chessman?.pins.map((pinId) => (
-          <Pin id={pinId} key={pinId} />
-        ))}
+        {Array.from(chessman?.pinMap.values() || []).map((pin) => {
+          return <Pin id={pin.id} key={pin.id} />;
+        })}
       </g>
     );
   },

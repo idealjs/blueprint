@@ -1,22 +1,7 @@
+import { IPin } from "@idealjs/blueprint";
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from ".";
-
-export enum PIN_DIRECTION {
-  OUT = "OUT",
-  IN = "IN",
-}
-
-export interface IPin {
-  id: string;
-  type: PIN_DIRECTION;
-  x: number;
-  y: number;
-  to?: {
-    pinId: string;
-  };
-  parentId: string;
-}
 
 export const pinsAdapter = createEntityAdapter<IPin>({
   selectId: (pin) => pin.id,

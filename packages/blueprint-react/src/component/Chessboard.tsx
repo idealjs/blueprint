@@ -41,8 +41,8 @@ const Chessboard: FC<IProps> = (props) => {
       const listenable = dnd
         .draggable(svgRef.current)
         .addListener(DND_EVENT.DRAG_START, (payload) => {
-          x = chessboardRef.current.x;
-          y = chessboardRef.current.y;
+          x = chessboardRef.current!.x;
+          y = chessboardRef.current!.y;
         })
         .addListener(DND_EVENT.DRAG, (payload) => {
           console.log("test test drag chessboard", payload);
@@ -61,7 +61,7 @@ const Chessboard: FC<IProps> = (props) => {
   }, [dispatch, dnd]);
 
   useEffect(() => {
-    if (svgRef.current) {
+    if (svgRef.current && chessboardRef.current) {
       let svgOffset: {
         x: number;
         y: number;
@@ -80,13 +80,13 @@ const Chessboard: FC<IProps> = (props) => {
           if (payload.item?.type === "menu-chessman") {
             addChessman(
               (payload.clientPosition.x -
-                chessboardRef.current.x -
+                chessboardRef.current!.x -
                 svgOffset.x) /
-                chessboardRef.current.k,
+                chessboardRef.current!.k,
               (payload.clientPosition.y -
-                chessboardRef.current.y -
+                chessboardRef.current!.y -
                 svgOffset.y) /
-                chessboardRef.current.k
+                chessboardRef.current!.k
             );
           }
         }
@@ -102,6 +102,9 @@ const Chessboard: FC<IProps> = (props) => {
     (event) => {
       console.log("onWheel", event.deltaY);
       // event.persist();
+      if (chessboardRef.current == null) {
+        return;
+      }
       dispatch(
         updateChessboard({
           k: chessboardRef.current.k - Math.sign(event.deltaY) / 10,
