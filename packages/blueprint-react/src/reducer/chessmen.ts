@@ -3,7 +3,7 @@ import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from ".";
 
-export const chessmenAdapter = createEntityAdapter<IChessman>({
+export const chessmenAdapter = createEntityAdapter<IChessmanState>({
   selectId: (chessman) => chessman.id,
   sortComparer: () => 0,
 });
@@ -29,3 +29,8 @@ export const {
 export const chessmenSelector = chessmenAdapter.getSelectors<RootState>(
   (state) => state.chessmen
 );
+
+export interface IChessmanState
+  extends Pick<IChessman, "id" | "x" | "y" | "type"> {
+  pinIds: string[];
+}

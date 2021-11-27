@@ -3,7 +3,7 @@ import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from ".";
 
-export const pinsAdapter = createEntityAdapter<IPin>({
+export const pinsAdapter = createEntityAdapter<IPinState>({
   selectId: (pin) => pin.id,
 });
 
@@ -32,3 +32,8 @@ export const {
 export const pinsSelector = pinsAdapter.getSelectors<RootState>(
   (state) => state.pins
 );
+
+export interface IPinState extends Pick<IPin, "id" | "x" | "y" | "type"> {
+  parentId: string;
+  connectedIds: string[];
+}

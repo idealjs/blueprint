@@ -1,57 +1,51 @@
-import {
-  BASE_TYPE,
-  Chessboard,
-  Chessman,
-  DataTypeManager,
-  IChessman,
-  IPin,
-  PIN_TYPE,
-} from "@idealjs/blueprint";
+import { BASE_TYPE, PIN_TYPE } from "@idealjs/blueprint";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import uniqid from "uniqid";
 
-import { addChessman } from "../../reducer/chessmen";
-import { addManyPin } from "../../reducer/pins";
+import { addChessman, IChessmanState } from "../../reducer/chessmen";
+import { addManyPin, IPinState } from "../../reducer/pins";
 
 export const useAddChessman = () => {
   const dispatch = useDispatch();
 
   return useCallback(
     (x, y) => {
-      let chessman: IChessman = {
-        id: uniqid(),
+      const chessmanId = uniqid(`CHESSMAN_`);
+      const pinInId = uniqid(`PIN_`);
+      const pinOutId = uniqid(`PIN_`);
+
+      let chessman: IChessmanState = {
+        id: chessmanId,
         type: {
           isArray: false,
           dataType: {
-            id: uniqid(),
+            id: BASE_TYPE.BOOLEAN,
             type: BASE_TYPE.BOOLEAN,
           },
         },
-        pinMap: new Map(),
+        pinIds: [pinInId, pinOutId],
         x,
         y,
       };
 
-      let pin1: IPin = {
-        id: uniqid(),
+      let pin1: IPinState = {
+        id: pinInId,
         type: PIN_TYPE.IN,
         x: 10,
         y: 30,
-        parent: chessman,
-        connected: new Map(),
+        parentId: chessmanId,
+        connectedIds: [],
       };
 
-      let pin2: IPin = {
-        id: uniqid(),
-        type: PIN_TYPE.IN,
+      let pin2: IPinState = {
+        id: pinOutId,
+        type: PIN_TYPE.OUT,
         x: 110,
         y: 30,
-        parent: chessman,
-        connected: new Map(),
+        parentId: chessmanId,
+        connectedIds: [],
       };
-      chessman.pinMap.set(pin1.id, pin1);
-      chessman.pinMap.set(pin2.id, pin2);
 
       dispatch(addChessman(chessman));
 

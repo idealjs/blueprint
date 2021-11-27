@@ -45,7 +45,6 @@ const Chessboard: FC<IProps> = (props) => {
           y = chessboardRef.current!.y;
         })
         .addListener(DND_EVENT.DRAG, (payload) => {
-          console.log("test test drag chessboard", payload);
           dispatch(
             updateChessboard({
               x: x + payload.offset.x,
