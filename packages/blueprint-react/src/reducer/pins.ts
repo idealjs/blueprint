@@ -34,6 +34,7 @@ export const pinsSelector = pinsAdapter.getSelectors<RootState>(
 );
 
 export interface IPinState extends Pick<IPin, "id" | "x" | "y" | "type"> {
+  dataTypeId: string;
   parentId: string;
   connectedIds: string[];
 }

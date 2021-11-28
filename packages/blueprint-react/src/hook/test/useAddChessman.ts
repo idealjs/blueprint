@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import uniqid from "uniqid";
 
 import { addChessman, IChessmanState } from "../../reducer/chessmen";
+import { IDataTypeState, upsertDataType } from "../../reducer/dataTypes";
 import { addManyPin, IPinState } from "../../reducer/pins";
 
 export const useAddChessman = () => {
@@ -15,13 +16,15 @@ export const useAddChessman = () => {
       const pinInId = uniqid(`PIN_`);
       const pinOutId = uniqid(`PIN_`);
 
+      const dataType: IDataTypeState = {
+        isArray: false,
+        id: BASE_TYPE.BOOLEAN,
+        type: BASE_TYPE.BOOLEAN,
+      };
+
       let chessman: IChessmanState = {
         id: chessmanId,
-        dataType: {
-          isArray: false,
-          id: BASE_TYPE.BOOLEAN,
-          type: BASE_TYPE.BOOLEAN,
-        },
+        dataTypeId: dataType.id,
         pinIds: [pinInId, pinOutId],
         x,
         y,
@@ -30,6 +33,7 @@ export const useAddChessman = () => {
       let pin1: IPinState = {
         id: pinInId,
         type: PIN_TYPE.IN,
+        dataTypeId: dataType.id,
         x: 10,
         y: 30,
         parentId: chessmanId,
@@ -39,6 +43,7 @@ export const useAddChessman = () => {
       let pin2: IPinState = {
         id: pinOutId,
         type: PIN_TYPE.OUT,
+        dataTypeId: dataType.id,
         x: 110,
         y: 30,
         parentId: chessmanId,
@@ -48,6 +53,8 @@ export const useAddChessman = () => {
       dispatch(addChessman(chessman));
 
       dispatch(addManyPin([pin1, pin2]));
+
+      dispatch(upsertDataType(dataType));
     },
     [dispatch]
   );

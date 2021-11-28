@@ -56,8 +56,8 @@ export interface IDataType {
 }
 
 export interface IFunctionType {
-  params: Map<number, IDataType | IFunctionType>;
-  returnType: IDataType | IFunctionType;
+  params: Map<number, IDataType>;
+  returnType: IDataType;
 }
 
 export enum BASE_TYPE {

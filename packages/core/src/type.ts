@@ -10,3 +10,7 @@ export const isFunctionType = (type: any): type is IFunctionType => {
 
 export type RequiredBy<T, K extends keyof T> = Omit<T, K> &
   Required<Pick<T, K>>;
+
+export type PartialRecord<K extends string | number | symbol, T> = Partial<
+  Record<K, T>
+>;

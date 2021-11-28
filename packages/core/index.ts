@@ -13,3 +13,4 @@ export { default as DataType } from "./src/DataType";
 //export DataTypeManager
 export * from "./src/DataTypeManager";
 export { default as DataTypeManager } from "./src/DataTypeManager";
+export * from "./src/type";

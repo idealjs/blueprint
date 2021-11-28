@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../reducer";
-import { pinsSelector, updateManyPin } from "../reducer/pins";
+import { IPinState, pinsSelector, updateManyPin } from "../reducer/pins";
 
 interface IProps {
   id: string;
@@ -15,20 +15,24 @@ const Pin = (props: IProps) => {
   const ref = useRef<SVGGElement>(null);
   const dnd = useDnd();
   const dispatch = useDispatch();
-  const pin = useSelector((state: RootState) =>
-    pinsSelector.selectById(state, id)
-  );
+  const pinRef = useRef<IPinState | undefined>(undefined);
+  const pin = useSelector((state: RootState) => {
+    const pin = pinsSelector.selectById(state, id);
+    pinRef.current = pin;
+    return pin;
+  });
 
   useEffect(() => {
     if (ref.current) {
       const listenable = dnd.draggable(ref.current, {
-        item: { type: "chessman-pin", id },
+        item: { type: "chessman-pin", pin: pinRef.current },
       });
+
       return () => {
         listenable.removeEleListeners().removeAllListeners();
       };
     }
-  }, [dnd, id]);
+  }, [dnd]);
 
   useEffect(() => {
     if (ref.current) {
@@ -36,15 +40,23 @@ const Pin = (props: IProps) => {
         DND_EVENT.DROP,
         (
           payload: IDropData<{
-            id: string;
+            pin: IPinState;
             type: string;
           }>
         ) => {
-          if (payload.item?.type === "chessman-pin" && payload.item?.id) {
+          if (payload.item?.type === "chessman-pin" && payload.item?.pin) {
+            if (pinRef.current?.type === payload.item.pin.type) {
+              console.warn("[Warn] pin type should not same");
+              return;
+            }
+            if (pinRef.current?.dataTypeId !== payload.item.pin.dataTypeId) {
+              console.warn("[Warn] pin dataType should same");
+              return;
+            }
             dispatch(
               updateManyPin([
                 {
-                  id: payload.item.id,
+                  id: payload.item.pin.id,
                   changes: {
                     connectedIds: [id],
                   },
@@ -52,7 +64,7 @@ const Pin = (props: IProps) => {
                 {
                   id: id,
                   changes: {
-                    connectedIds: [payload.item.id],
+                    connectedIds: [payload.item.pin.id],
                   },
                 },
               ])
