@@ -35,6 +35,6 @@ export interface IDataTypeState extends Pick<IDataType, "id" | "isArray"> {
 }
 
 export interface IFunctionTypeState {
-  params?: PartialRecord<number, IDataTypeState>;
+  params: PartialRecord<number, IDataTypeState>;
   returnType?: IDataTypeState;
 }
