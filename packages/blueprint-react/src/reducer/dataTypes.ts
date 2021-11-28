@@ -8,9 +8,21 @@ export const dataTypesAdapter = createEntityAdapter<IDataTypeState>({
   sortComparer: () => 0,
 });
 
+export const initialDataTypes: IDataTypeState[] = [
+  {
+    isArray: false,
+    id: BASE_TYPE.BOOLEAN,
+    name: BASE_TYPE.BOOLEAN,
+    type: BASE_TYPE.BOOLEAN,
+  },
+];
+
 const slice = createSlice({
   name: "dataType",
-  initialState: dataTypesAdapter.getInitialState(),
+  initialState: dataTypesAdapter.addMany(
+    dataTypesAdapter.getInitialState(),
+    initialDataTypes
+  ),
   reducers: {
     remove: dataTypesAdapter.removeOne,
     update: dataTypesAdapter.updateOne,
@@ -30,7 +42,8 @@ export const datatypesSelector = dataTypesAdapter.getSelectors<RootState>(
   (state) => state.dataTypes
 );
 
-export interface IDataTypeState extends Pick<IDataType, "id" | "isArray"> {
+export interface IDataTypeState
+  extends Pick<IDataType, "id" | "name" | "isArray"> {
   type: BASE_TYPE | IFunctionTypeState | PartialRecord<string, IDataTypeState>;
 }
 

@@ -2,10 +2,12 @@ import DataTypeManager from "./DataTypeManager";
 
 class DataType implements IDataType {
   public id: string;
+  public name: string;
   public type: BASE_TYPE | IFunctionType | Map<string, DataType>;
   public isArray: boolean;
   constructor(dataTypeManager: DataTypeManager, dataType: IDataType) {
     this.id = dataType.id;
+    this.name = dataType.name;
     this.isArray = dataType.isArray;
     if (dataType.type instanceof Map) {
       let type = new Map<string, DataType>();
@@ -34,6 +36,7 @@ class DataType implements IDataType {
       });
       return {
         id: this.id,
+        name: this.name,
         type,
         isArray: this.isArray,
       };
@@ -41,6 +44,7 @@ class DataType implements IDataType {
 
     return {
       id: this.id,
+      name: this.name,
       type: this.type,
       isArray: this.isArray,
     };
@@ -51,6 +55,7 @@ export default DataType;
 
 export interface IDataType {
   id: string;
+  name: string;
   type: BASE_TYPE | IFunctionType | Map<string, IDataType>;
   isArray: boolean;
 }

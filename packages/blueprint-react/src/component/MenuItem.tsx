@@ -12,7 +12,11 @@ const MenuItem = () => {
   }, [dnd]);
 
   return (
-    <div ref={ref} className="menuItem" style={{ touchAction: "none" }}>
+    <div
+      ref={ref}
+      className="menuItem"
+      style={{ touchAction: "none", cursor: "grab" }}
+    >
       Item
     </div>
   );

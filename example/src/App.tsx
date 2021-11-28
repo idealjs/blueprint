@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { Chessboard, MenuItem } from "@idealjs/blueprint-react";
+import { Chessboard, DataTypes, MenuItem } from "@idealjs/blueprint-react";
 
 function App() {
   return (
@@ -8,6 +8,7 @@ function App() {
       <div style={{ width: "100vw", height: "100vh", display: "flex" }}>
         <div style={{ width: "200px", backgroundColor: "#5e5ebb" }}>
           <MenuItem />
+          <DataTypes />
         </div>
         <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
           <div style={{ flex: 1 }}>
