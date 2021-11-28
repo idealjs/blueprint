@@ -11,16 +11,7 @@ const PathLayer = () => {
     return chessmen.flatMap((chessman) =>
       chessman.pinIds
         .filter((pinId) => {
-          console.log("test test1");
           const pin = pinsSelector.selectById(state, pinId);
-          console.log(
-            "test test1",
-            pinId,
-            pin?.type === PIN_TYPE.OUT,
-            pin?.connectedIds,
-            pin?.type === PIN_TYPE.OUT && pin.connectedIds.length !== 0
-          );
-
           return pin?.type === PIN_TYPE.OUT && pin.connectedIds.length !== 0;
         })
         .map((pinId) => {
@@ -28,6 +19,7 @@ const PathLayer = () => {
           if (!pin) {
             return "";
           }
+          
           const targetPin = pinsSelector.selectById(state, pin.connectedIds[0]);
           if (!targetPin) {
             return "";
