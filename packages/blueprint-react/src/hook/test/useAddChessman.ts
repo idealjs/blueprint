@@ -17,12 +17,10 @@ export const useAddChessman = () => {
 
       let chessman: IChessmanState = {
         id: chessmanId,
-        type: {
+        dataType: {
           isArray: false,
-          dataType: {
-            id: BASE_TYPE.BOOLEAN,
-            type: BASE_TYPE.BOOLEAN,
-          },
+          id: BASE_TYPE.BOOLEAN,
+          type: BASE_TYPE.BOOLEAN,
         },
         pinIds: [pinInId, pinOutId],
         x,

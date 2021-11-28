@@ -3,8 +3,10 @@ import DataTypeManager from "./DataTypeManager";
 class DataType implements IDataType {
   public id: string;
   public type: BASE_TYPE | IFunctionType | Map<string, DataType>;
+  public isArray: boolean;
   constructor(dataTypeManager: DataTypeManager, dataType: IDataType) {
     this.id = dataType.id;
+    this.isArray = dataType.isArray;
     if (dataType.type instanceof Map) {
       let type = new Map<string, DataType>();
       dataType.type.forEach((value, key: string) => {
@@ -33,12 +35,14 @@ class DataType implements IDataType {
       return {
         id: this.id,
         type,
+        isArray: this.isArray,
       };
     }
 
     return {
       id: this.id,
       type: this.type,
+      isArray: this.isArray,
     };
   }
 }
@@ -48,6 +52,7 @@ export default DataType;
 export interface IDataType {
   id: string;
   type: BASE_TYPE | IFunctionType | Map<string, IDataType>;
+  isArray: boolean;
 }
 
 export interface IFunctionType {

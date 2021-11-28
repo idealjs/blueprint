@@ -31,6 +31,6 @@ export const chessmenSelector = chessmenAdapter.getSelectors<RootState>(
 );
 
 export interface IChessmanState
-  extends Pick<IChessman, "id" | "x" | "y" | "type"> {
+  extends Pick<IChessman, "id" | "x" | "y" | "dataType"> {
   pinIds: string[];
 }

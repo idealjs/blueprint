@@ -1,12 +1,13 @@
 import uniqid from "uniqid";
 
-import { Chessboard } from "..";
+import { Chessboard, DataType, IDataType } from "..";
 import Chessman, { IChessman } from "./Chessman";
 import { RequiredBy } from "./type";
 
 class Pin {
   id: string = uniqid();
   type: PIN_TYPE;
+  dataType: DataType;
   parent: Chessman;
   connected: Map<string, Pin> = new Map<string, Pin>();
   x: number = 0;
@@ -14,9 +15,10 @@ class Pin {
 
   constructor(
     chessboard: Chessboard,
-    pin: RequiredBy<Partial<IPin>, "id" | "type" | "parent">
+    pin: RequiredBy<Partial<IPin>, "id" | "type" | "dataType" | "parent">
   ) {
     this.type = pin.type;
+    this.dataType = DataType.fromJSON(chessboard.dataTypeManager, pin.dataType);
     let parent = Chessman.fromJSON(chessboard, pin.parent);
     this.parent = parent;
     if (pin.id) this.id = pin.id;
@@ -31,7 +33,7 @@ class Pin {
 
   static fromJSON(
     chessboard: Chessboard,
-    pin: RequiredBy<Partial<IPin>, "id" | "type" | "parent">
+    pin: RequiredBy<Partial<IPin>, "id" | "type" | "dataType" | "parent">
   ) {
     const p = chessboard.pinMap.get(pin.id);
     if (p != null) {
@@ -48,6 +50,7 @@ class Pin {
     return {
       id: this.id,
       type: this.type,
+      dataType: this.dataType.toJSON(),
       parent: this.parent.toJSON(),
       connected,
       x: this.x,
@@ -61,6 +64,7 @@ export default Pin;
 export interface IPin {
   id: string;
   type: PIN_TYPE;
+  dataType: IDataType;
   parent: IChessman;
   connected: Map<string, IPin>;
   x: number;

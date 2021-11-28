@@ -1,21 +1,21 @@
+import { DataType, IDataType } from "..";
 import Chessboard from "./Chessboard";
-import ChessmanType, { IChessmanType } from "./ChessmanType";
 import Pin, { IPin } from "./Pin";
 import { RequiredBy } from "./type";
 
 class Chessman {
   id: string;
-  type: ChessmanType;
+  dataType: DataType;
   pinMap: Map<string, Pin> = new Map();
   x: number;
   y: number;
 
   constructor(
     chessboard: Chessboard,
-    chessman: RequiredBy<Partial<IChessman>, "id" | "type">
+    chessman: RequiredBy<Partial<IChessman>, "id" | "dataType">
   ) {
     this.id = chessman.id;
-    this.type = new ChessmanType(chessboard.dataTypeManager, chessman.type);
+    this.dataType = new DataType(chessboard.dataTypeManager, chessman.dataType);
     this.x = chessman.x || 0;
     this.y = chessman.y || 0;
     if (chessman.pinMap) {
@@ -41,7 +41,7 @@ class Chessman {
 
     return {
       id: this.id,
-      type: this.type.toJSON(),
+      dataType: this.dataType.toJSON(),
       pinMap,
       x: this.x,
       y: this.y,
@@ -53,7 +53,7 @@ export default Chessman;
 
 export interface IChessman {
   id: string;
-  type: IChessmanType;
+  dataType: IDataType;
   pinMap: Map<string, IPin>;
   x: number;
   y: number;
