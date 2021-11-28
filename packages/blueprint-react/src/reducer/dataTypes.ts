@@ -5,17 +5,18 @@ import { RootState } from ".";
 
 export const dataTypesAdapter = createEntityAdapter<IDataTypeState>({
   selectId: (datatype) => datatype.id,
-  sortComparer: () => 0,
 });
 
-export const initialDataTypes: IDataTypeState[] = [
-  {
-    isArray: false,
-    id: BASE_TYPE.BOOLEAN,
-    name: BASE_TYPE.BOOLEAN,
-    type: BASE_TYPE.BOOLEAN,
-  },
-];
+export const initialDataTypes: IDataTypeState[] = Object.entries(BASE_TYPE).map(
+  (entry) => {
+    return {
+      isArray: false,
+      id: entry[0],
+      name: entry[0],
+      type: entry[1],
+    };
+  }
+);
 
 const slice = createSlice({
   name: "dataType",

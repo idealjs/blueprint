@@ -70,4 +70,5 @@ export enum BASE_TYPE {
   STRING = "STRING",
   BOOLEAN = "BOOLEAN",
   NULL = "NULL",
+  ANY = "ANY",
 }

@@ -5,7 +5,7 @@ import { RootState } from ".";
 
 export const chessmenAdapter = createEntityAdapter<IChessmanState>({
   selectId: (chessman) => chessman.id,
-  sortComparer: () => 0,
+  sortComparer: (a, b) => a.id.localeCompare(b.id),
 });
 
 const slice = createSlice({
