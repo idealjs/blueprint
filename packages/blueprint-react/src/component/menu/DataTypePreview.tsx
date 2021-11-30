@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 import { RootState } from "../../reducer";
-import { datatypesSelector } from "../../reducer/dataTypes";
+import { dataTypesSelector } from "../../reducer/dataTypes";
 
 interface IProps {
   id: string;
@@ -10,7 +10,7 @@ interface IProps {
 const DataTypePreview = (props: IProps) => {
   const { id } = props;
   const dataType = useSelector((state: RootState) => {
-    return datatypesSelector.selectById(state, id);
+    return dataTypesSelector.selectById(state, id);
   });
   return <div style={{ userSelect: "none" }}>{dataType?.name}</div>;
 };

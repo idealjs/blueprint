@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import uniqid from "uniqid";
 
 import { RootState } from "../../reducer";
-import { datatypesSelector, upsertDataType } from "../../reducer/dataTypes";
+import { dataTypesSelector, upsertDataType } from "../../reducer/dataTypes";
 import AddType from "./AddType";
 import DataTypePreview from "./DataTypePreview";
 
 const DataTypes = () => {
   const [addingType, setAddingType] = useState(false);
   const dataTypes = useSelector((state: RootState) => {
-    return datatypesSelector.selectAll(state);
+    return dataTypesSelector.selectAll(state);
   });
   const dispatch = useDispatch();
 

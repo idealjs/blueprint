@@ -39,7 +39,7 @@ export const {
   update: updateDataType,
 } = slice.actions;
 
-export const datatypesSelector = dataTypesAdapter.getSelectors<RootState>(
+export const dataTypesSelector = dataTypesAdapter.getSelectors<RootState>(
   (state) => state.dataTypes
 );
 
@@ -49,6 +49,55 @@ export interface IDataTypeState
 }
 
 export interface IFunctionTypeState {
-  params: PartialRecord<number, IDataTypeState>;
-  returnType?: IDataTypeState;
+  _params: PartialRecord<number, IDataTypeState>;
+  _returnType?: IDataTypeState;
 }
+
+export const isDataTypeBaseType = (
+  dataType: IDataTypeState
+): dataType is {
+  id: string;
+  name: string;
+  type: BASE_TYPE;
+  isArray: boolean;
+} => {
+  if (
+    typeof dataType.type === "string" &&
+    Object.values(BASE_TYPE).includes(dataType.type)
+  ) {
+    return true;
+  }
+  return false;
+};
+
+export const isDataTypeFunction = (
+  dataType: IDataTypeState
+): dataType is {
+  id: string;
+  name: string;
+  type: IFunctionTypeState;
+  isArray: boolean;
+} => {
+  if (typeof dataType.type === "object" && dataType.type._params) {
+    return true;
+  }
+  return false;
+};
+
+export const isDataTypeObjectType = (
+  dataType: IDataTypeState
+): dataType is {
+  id: string;
+  name: string;
+  type: PartialRecord<string, IDataTypeState>;
+  isArray: boolean;
+} => {
+  if (
+    typeof dataType.type === "object" &&
+    dataType.type._params == null &&
+    dataType.type._returnType == null
+  ) {
+    return true;
+  }
+  return false;
+};

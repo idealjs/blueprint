@@ -5,6 +5,8 @@ import chessmen from "./chessmen";
 import dataTypes from "./dataTypes";
 import pins from "./pins";
 import selectedChessmanId from "./selectedChessmanId";
+import selectedVariableId from "./selectedVariableId";
+import variables from "./variables";
 
 const rootReducer = combineReducers({
   chessboard,
@@ -12,6 +14,8 @@ const rootReducer = combineReducers({
   dataTypes,
   pins,
   selectedChessmanId,
+  selectedVariableId,
+  variables,
 });
 
 export default rootReducer;

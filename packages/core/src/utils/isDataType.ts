@@ -1,6 +1,6 @@
 import { BASE_TYPE, IDataType, IFunctionType } from "../DataType";
 
-const isDataTypeBaseType = (
+export const isDataTypeBaseType = (
   dataType: IDataType
 ): dataType is {
   id: string;
@@ -8,10 +8,16 @@ const isDataTypeBaseType = (
   type: BASE_TYPE;
   isArray: boolean;
 } => {
+  if (
+    typeof dataType.type === "string" &&
+    Object.values(BASE_TYPE).includes(dataType.type)
+  ) {
+    return true;
+  }
   return false;
 };
 
-const isDataTypeFunction = (
+export const isDataTypeFunction = (
   dataType: IDataType
 ): dataType is {
   id: string;
@@ -22,7 +28,7 @@ const isDataTypeFunction = (
   return false;
 };
 
-const isDataTypeComplexType = (
+export const isDataTypeComplexType = (
   dataType: IDataType
 ): dataType is {
   id: string;
