@@ -3,11 +3,12 @@ import "react-tabs/style/react-tabs.css";
 
 import {
   Chessboard,
-  ChessmanMenu,
-  DataTypes,
+  DataTypeList,
   MenuItem,
+  SelectedChessman,
+  SelectedDataType,
+  SelectedVariable,
   VariableList,
-  VariableMenu,
 } from "@idealjs/blueprint-react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 
@@ -26,11 +27,12 @@ function App() {
               <MenuItem />
             </TabPanel>
             <TabPanel>
-              <DataTypes />
+              <DataTypeList />
+              <SelectedDataType />
             </TabPanel>
             <TabPanel>
               <VariableList />
-              <VariableMenu />
+              <SelectedVariable />
             </TabPanel>
           </Tabs>
         </div>

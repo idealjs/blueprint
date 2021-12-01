@@ -1,19 +1,25 @@
 import { BASE_TYPE } from "@idealjs/blueprint";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import uniqid from "uniqid";
 
 import { RootState } from "../../reducer";
 import { dataTypesSelector, upsertDataType } from "../../reducer/dataTypes";
-import AddType from "./AddType";
-import DataTypePreview from "./DataTypePreview";
+import { setSelectedDataTypeId } from "../../reducer/selectedDataTypeId";
+import AddThings from "./AddThings";
 
-const DataTypes = () => {
+const DataTypeList = () => {
   const [addingType, setAddingType] = useState(false);
   const dataTypes = useSelector((state: RootState) => {
     return dataTypesSelector.selectAll(state);
   });
   const dispatch = useDispatch();
+  const selectDataType = useCallback(
+    (id: string) => {
+      dispatch(setSelectedDataTypeId(id));
+    },
+    [dispatch]
+  );
 
   return (
     <div>
@@ -26,7 +32,7 @@ const DataTypes = () => {
         add new type
       </div>
       {addingType && (
-        <AddType
+        <AddThings
           onCancel={() => {
             setAddingType(false);
           }}
@@ -43,13 +49,21 @@ const DataTypes = () => {
           }}
         />
       )}
-      {dataTypes.map((dataType, index) => {
+      {dataTypes.map((dataType) => {
         return (
-          <DataTypePreview key={dataType.id} id={dataType.id}></DataTypePreview>
+          <div
+            key={dataType.id}
+            onClick={() => {
+              selectDataType(dataType.id);
+            }}
+            style={{ userSelect: "none" }}
+          >
+            {dataType?.name}
+          </div>
         );
       })}
     </div>
   );
 };
 
-export default DataTypes;
+export default DataTypeList;

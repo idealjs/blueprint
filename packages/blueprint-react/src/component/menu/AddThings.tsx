@@ -4,7 +4,7 @@ interface IProps {
   onCancel?: () => void;
   onConfirm?: (name: string) => void;
 }
-const AddType = (props: IProps) => {
+const AddThings = (props: IProps) => {
   const { onCancel, onConfirm } = props;
   const [name, setName] = useState("");
 
@@ -38,4 +38,4 @@ const AddType = (props: IProps) => {
   );
 };
 
-export default AddType;
+export default AddThings;

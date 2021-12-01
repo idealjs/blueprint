@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../reducer";
 import {
-  datatypesSelector,
+  dataTypesSelector,
   IDataTypeState,
   IFunctionTypeState,
   isDataTypeBaseType,
@@ -19,14 +19,12 @@ export enum DATATYPE_CATEGORY {
   OBJECT = "object",
 }
 
-interface IProps {
-  id: string;
-}
-
-const DataType = (props: IProps) => {
-  const { id } = props;
+const DataType = () => {
   const dataType = useSelector((state: RootState) => {
-    return datatypesSelector.selectById(state, id);
+    if (state.selectedDataTypeId == null) {
+      return;
+    }
+    return dataTypesSelector.selectById(state, state.selectedDataTypeId);
   });
 
   const dispatch = useDispatch();
@@ -55,7 +53,7 @@ const DataType = (props: IProps) => {
     }
   }, [dataType]);
 
-  return (
+  return dataType ? (
     <div>
       <div>name:{dataType?.name}</div>
       <select
@@ -87,12 +85,14 @@ const DataType = (props: IProps) => {
           if (dataType?.id == null || type == null) {
             return;
           }
-          updateDataType({
-            id: dataType.id,
-            changes: {
-              type: type,
-            },
-          });
+          dispatch(
+            updateDataType({
+              id: dataType.id,
+              changes: {
+                type: type,
+              },
+            })
+          );
         }}
       >
         {Object.values(DATATYPE_CATEGORY).map((category) => {
@@ -105,7 +105,7 @@ const DataType = (props: IProps) => {
       </select>
       <div>{typeRender}</div>
     </div>
-  );
+  ) : null;
 };
 
 export default DataType;

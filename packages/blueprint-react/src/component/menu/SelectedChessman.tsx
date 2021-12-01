@@ -4,7 +4,7 @@ import { RootState } from "../../reducer";
 import { chessmenSelector, updateChessman } from "../../reducer/chessmen";
 import { dataTypesSelector } from "../../reducer/dataTypes";
 
-const ChessmanMenu = () => {
+const SelectedChessman = () => {
   const selectedChessman = useSelector((state: RootState) => {
     if (state.selectedChessmanId == null) {
       return;
@@ -32,4 +32,4 @@ const ChessmanMenu = () => {
   );
 };
 
-export default ChessmanMenu;
+export default SelectedChessman;
