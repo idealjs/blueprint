@@ -1,6 +1,8 @@
-import { ChessmanJSON, DataType, DataTypeJSON, PinJSON } from "..";
-import Chessman from "./Chessman";
-import Pin from "./Pin";
+import DataType from "../dataType/DataType";
+import { DataTypeJSON } from "../type";
+import Variable, { VariableJSON } from "../variable/Variable";
+import Chessman, { ChessmanJSON } from "./Chessman";
+import Pin, { PinJSON } from "./Pin";
 
 class Chessboard {
   public x: number = 0;
@@ -9,18 +11,19 @@ class Chessboard {
   public chessmen: Chessman[] = [];
   public pins: Pin[] = [];
   public dataTypes: DataType[] = [];
+  public variables: Variable[] = [];
 
-  constructor(chessboardJSON?: ChessboardJSON) {
-    if (chessboardJSON) {
-      this.x = chessboardJSON.x;
-      this.y = chessboardJSON.y;
-      this.k = chessboardJSON.k;
-      this.chessmen = chessboardJSON.chessmen.map(
-        (chessmanJSON) => new Chessman(chessmanJSON)
+  constructor(json?: ChessboardJSON) {
+    if (json) {
+      this.x = json.x;
+      this.y = json.y;
+      this.k = json.k;
+      this.chessmen = json.chessmen.map(
+        (chessmanJSON) => new Chessman(chessmanJSON, this)
       );
-      this.pins = chessboardJSON.pins.map((pinJSON) => new Pin(pinJSON));
-      this.dataTypes = chessboardJSON.dataTypes.map(
-        (dataTypeJSON) => new DataType(dataTypeJSON)
+      this.pins = json.pins.map((pinJSON) => new Pin(pinJSON, this));
+      this.dataTypes = json.dataTypes.map((dataTypeJSON) =>
+        DataType.fromJSON(dataTypeJSON, this)
       );
     }
   }
@@ -33,6 +36,7 @@ class Chessboard {
       chessmen: this.chessmen.map((chessman) => chessman.toJSON()),
       pins: this.pins.map((pin) => pin.toJSON()),
       dataTypes: this.dataTypes.map((dataType) => dataType.toJSON()),
+      variables: this.variables.map((variable) => variable.toJSON()),
     };
   }
 }
@@ -46,6 +50,7 @@ interface Chessboard {
   chessmen: Chessman[];
   pins: Pin[];
   dataTypes: DataType[];
+  variables: Variable[];
 }
 
 export interface ChessboardJSON {
@@ -55,4 +60,5 @@ export interface ChessboardJSON {
   chessmen: ChessmanJSON[];
   pins: PinJSON[];
   dataTypes: DataTypeJSON[];
+  variables: VariableJSON[];
 }

@@ -1,5 +1,6 @@
-import { DataTypeJSON } from "..";
-import DataType from "./DataType";
+import DataType from "../dataType/DataType";
+import { DataTypeJSON } from "../type";
+import Chessboard from "./Chessboard";
 import Pin, { PinJSON } from "./Pin";
 
 class Chessman {
@@ -9,12 +10,12 @@ class Chessman {
   x: number;
   y: number;
 
-  constructor(chessman: ChessmanJSON) {
-    this.id = chessman.id;
-    this.dataType = new DataType(chessman.dataType);
-    this.x = chessman.x || 0;
-    this.y = chessman.y || 0;
-    this.pins = chessman.pins.map((p) => new Pin(p));
+  constructor(json: ChessmanJSON, chessboard: Chessboard) {
+    this.id = json.id;
+    this.dataType = DataType.fromJSON(json.dataType, chessboard);
+    this.x = json.x || 0;
+    this.y = json.y || 0;
+    this.pins = json.pins.map((p) => new Pin(p, chessboard));
   }
 
   toJSON(): ChessmanJSON {

@@ -1,12 +1,15 @@
+import Chessboard from "./Chessboard";
 import Chessman, { ChessmanJSON } from "./Chessman";
 
 class Pin {
-  constructor(pinJSON: PinJSON) {
-    this.id = pinJSON.id;
-    this.parent = new Chessman(pinJSON.parent);
-    this.connected = pinJSON.connected.map((pinJSON) => new Pin(pinJSON));
-    this.x = pinJSON.x;
-    this.y = pinJSON.y;
+  constructor(json: PinJSON, chessboard: Chessboard) {
+    this.id = json.id;
+    this.parent = new Chessman(json.parent, chessboard);
+    this.connected = json.connected.map(
+      (pinJSON) => new Pin(pinJSON, chessboard)
+    );
+    this.x = json.x;
+    this.y = json.y;
   }
 
   toJSON(): PinJSON {
