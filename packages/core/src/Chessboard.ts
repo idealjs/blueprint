@@ -1,52 +1,40 @@
-import { Chessman, DataType } from "..";
-import { IChessman } from "./Chessman";
-import Pin, { IPin } from "./Pin";
+import { ChessmanJSON, DataType, DataTypeJSON, PinJSON } from "..";
+import Chessman from "./Chessman";
+import Pin from "./Pin";
 
 class Chessboard {
   public x: number = 0;
   public y: number = 0;
   public k: number = 1;
-  public chessmanMap = new Map<string, Chessman>();
-  public pinMap = new Map<string, Pin>();
-  public dataTypeMap = new Map<string, DataType>();
+  public chessmen: Chessman[] = [];
+  public pins: Pin[] = [];
+  public dataTypes: DataType[] = [];
 
-  constructor(chessboard?: Partial<Chessboard>) {
-    // if (chessboard?.x) this.x = chessboard.x;
-    // if (chessboard?.y) this.y = chessboard.y;
-    // if (chessboard?.k) this.k = chessboard.k;
-    // if (chessboard?.chessmanMap) {
-    //   chessboard.chessmanMap.forEach((value, key) => {
-    //     this.chessmanMap.set(key, Chessman.fromJSON(this, value));
-    //   });
-    // }
-    // if (chessboard?.pinMap) {
-    //   chessboard.pinMap.forEach((value, key) => {
-    //     this.pinMap.set(key, Pin.fromJSON(this, value));
-    //   });
-    // }
+  constructor(chessboardJSON?: ChessboardJSON) {
+    if (chessboardJSON) {
+      this.x = chessboardJSON.x;
+      this.y = chessboardJSON.y;
+      this.k = chessboardJSON.k;
+      this.chessmen = chessboardJSON.chessmen.map(
+        (chessmanJSON) => new Chessman(chessmanJSON)
+      );
+      this.pins = chessboardJSON.pins.map((pinJSON) => new Pin(pinJSON));
+      this.dataTypes = chessboardJSON.dataTypes.map(
+        (dataTypeJSON) => new DataType(dataTypeJSON)
+      );
+    }
   }
 
-  addChessman(chessman: Chessman) {}
-
-  // toJSON(): IChessboard {
-  //   const chessmanMap = new Map<string, IChessman>();
-  //   this.chessmanMap.forEach((chessman, key) => {
-  //     chessmanMap.set(key, chessman.toJSON());
-  //   });
-
-  //   const pinMap = new Map<string, IPin>();
-  //   this.pinMap.forEach((pin, key) => {
-  //     pinMap.set(key, pin.toJSON());
-  //   });
-
-  //   return {
-  //     x: this.x,
-  //     y: this.y,
-  //     k: this.k,
-  //     chessmanMap,
-  //     pinMap,
-  //   };
-  // }
+  toJSON(): ChessboardJSON {
+    return {
+      x: this.x,
+      y: this.y,
+      k: this.k,
+      chessmen: this.chessmen.map((chessman) => chessman.toJSON()),
+      pins: this.pins.map((pin) => pin.toJSON()),
+      dataTypes: this.dataTypes.map((dataType) => dataType.toJSON()),
+    };
+  }
 }
 
 export default Chessboard;
@@ -57,14 +45,14 @@ interface Chessboard {
   k: number;
   chessmen: Chessman[];
   pins: Pin[];
-  dataTypes: DataType;
+  dataTypes: DataType[];
 }
 
-export interface IChessboardJSON {
+export interface ChessboardJSON {
   x: number;
   y: number;
   k: number;
-  chessmen: IChessmanJSON[];
-  dataTypes: IDataTypeJSON[];
-  pins: IPinJSON[];
+  chessmen: ChessmanJSON[];
+  pins: PinJSON[];
+  dataTypes: DataTypeJSON[];
 }
