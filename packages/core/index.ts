@@ -10,7 +10,14 @@ export { default as Pin } from "./src/Pin";
 //export DataType
 export * from "./src/DataType";
 export { default as DataType } from "./src/DataType";
-//export DataTypeManager
-export * from "./src/DataTypeManager";
-export { default as DataTypeManager } from "./src/DataTypeManager";
+//export ArrayType
+export * from "./src/ArrayType";
+export { default as ArrayType } from "./src/ArrayType";
+//export ObjectType
+export * from "./src/ObjectType";
+export { default as ObjectType } from "./src/ObjectType";
+//export FunctionType
+export * from "./src/FunctionType";
+export { default as FunctionType } from "./src/FunctionType";
+//export types
 export * from "./src/type";

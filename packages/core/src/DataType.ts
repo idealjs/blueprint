@@ -1,69 +1,57 @@
-import DataTypeManager from "./DataTypeManager";
+import ArrayType, { ArrayTypeJSON } from "./ArrayType";
+import FunctionType, { FunctionTypeJSON } from "./FunctionType";
+import ObjectType, { ObjectTypeJSON } from "./ObjectType";
+import { IType } from "./type";
 
-class DataType implements IDataType {
-  public id: string;
-  public name: string;
-  public type: BASE_TYPE | IFunctionType | Map<string, DataType>;
-  public isArray: boolean;
-  constructor(dataTypeManager: DataTypeManager, dataType: IDataType) {
-    this.id = dataType.id;
-    this.name = dataType.name;
-    this.isArray = dataType.isArray;
-    if (dataType.type instanceof Map) {
-      let type = new Map<string, DataType>();
-      dataType.type.forEach((value, key: string) => {
-        type.set(key, DataType.fromJSON(dataTypeManager, value));
-      });
-      this.type = type;
-    } else {
-      this.type = dataType.type;
-    }
+const parseJSON = (
+  data: BASE_TYPE | ArrayTypeJSON | ObjectTypeJSON | FunctionTypeJSON
+) => {
+  if (typeof data === "string") {
+    return data;
   }
 
-  static fromJSON(dataTypeManager: DataTypeManager, dataType: IDataType) {
-    const d = dataTypeManager.dataTypeMap.get(dataType.id);
-    if (d != null) {
-      return d;
-    }
-    return new DataType(dataTypeManager, dataType);
+  if (data._type === "ArrayType") {
+    return new ArrayType(data);
   }
 
-  toJSON(): IDataType {
-    if (this.type instanceof Map) {
-      const type = new Map<string, IDataType>();
-      this.type.forEach((value, key: string) => {
-        type.set(key, value.toJSON());
-      });
-      return {
-        id: this.id,
-        name: this.name,
-        type,
-        isArray: this.isArray,
-      };
-    }
+  if (data._type === "ObjectType") {
+    return new ObjectType(data);
+  }
 
+  if (data._type === "FunctionType") {
+    return new FunctionType(data);
+  }
+
+  throw new Error("Unknown type");
+};
+
+const toJSON = (data: BASE_TYPE | ArrayType | ObjectType | FunctionType) => {
+  if (typeof data === "string") {
+    return data;
+  }
+  return data.toJSON();
+};
+
+class DataType {
+  constructor(dataTypeJSON: DataTypeJSON) {
+    this._id = dataTypeJSON._id;
+    this._name = dataTypeJSON._name;
+    this._data = parseJSON(dataTypeJSON._data);
+  }
+
+  toJSON(): DataTypeJSON {
     return {
-      id: this.id,
-      name: this.name,
-      type: this.type,
-      isArray: this.isArray,
+      _id: this._id,
+      _name: this._name,
+      _data: toJSON(this._data),
     };
   }
 }
 
 export default DataType;
 
-export interface IDataType {
-  id: string;
-  name: string;
-  type: BASE_TYPE | IFunctionType | Map<string, IDataType>;
-  isArray: boolean;
-}
-
-export interface IFunctionType {
-  params: Map<number, IDataType>;
-  returnType?: IDataType;
-}
+interface DataType
+  extends IType<BASE_TYPE | ArrayType | ObjectType | FunctionType> {}
 
 export enum BASE_TYPE {
   NUMBER = "NUMBER",
@@ -72,3 +60,8 @@ export enum BASE_TYPE {
   NULL = "NULL",
   ANY = "ANY",
 }
+
+export interface DataTypeJSON
+  extends IType<
+    BASE_TYPE | ArrayTypeJSON | ObjectTypeJSON | FunctionTypeJSON
+  > {}
