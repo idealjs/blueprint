@@ -8,7 +8,7 @@ import {
   IDataTypeState,
   IFunctionTypeState,
   isDataTypeBaseType,
-  isDataTypeFunction,
+  isDataTypeFunctionType,
   isDataTypeObjectType,
   updateDataType,
 } from "../../reducer/dataTypes";
@@ -31,9 +31,9 @@ const DataType = () => {
 
   const typeRender = useMemo(() => {
     if (dataType && isDataTypeBaseType(dataType)) {
-      return dataType.type;
+      return dataType._type.value;
     }
-    if (dataType && isDataTypeFunction(dataType)) {
+    if (dataType && isDataTypeFunctionType(dataType)) {
       return null;
     }
     if (dataType && isDataTypeObjectType(dataType)) {
@@ -45,7 +45,7 @@ const DataType = () => {
     if (dataType && isDataTypeBaseType(dataType)) {
       return DATATYPE_CATEGORY.BASE;
     }
-    if (dataType && isDataTypeFunction(dataType)) {
+    if (dataType && isDataTypeFunctionType(dataType)) {
       return DATATYPE_CATEGORY.FUNCTION;
     }
     if (dataType && isDataTypeObjectType(dataType)) {
@@ -55,44 +55,44 @@ const DataType = () => {
 
   return dataType ? (
     <div>
-      <div>name:{dataType?.name}</div>
+      <div>name:{dataType?._name}</div>
       <select
         value={category}
         onChange={(e) => {
-          let type:
-            | BASE_TYPE
-            | IFunctionTypeState
-            | PartialRecord<string, IDataTypeState>;
-          switch (e.target.value) {
-            case DATATYPE_CATEGORY.BASE: {
-              type = BASE_TYPE.STRING;
-              break;
-            }
-            case DATATYPE_CATEGORY.FUNCTION: {
-              type = {
-                _params: {},
-              };
-              break;
-            }
-            case DATATYPE_CATEGORY.OBJECT: {
-              type = {};
-              break;
-            }
-            default: {
-              type = BASE_TYPE.STRING;
-            }
-          }
-          if (dataType?.id == null || type == null) {
-            return;
-          }
-          dispatch(
-            updateDataType({
-              id: dataType.id,
-              changes: {
-                type: type,
-              },
-            })
-          );
+          // let type:
+          //   | BASE_TYPE
+          //   | IFunctionTypeState
+          //   | PartialRecord<string, IDataTypeState>;
+          // switch (e.target.value) {
+          //   case DATATYPE_CATEGORY.BASE: {
+          //     type = BASE_TYPE.STRING;
+          //     break;
+          //   }
+          //   case DATATYPE_CATEGORY.FUNCTION: {
+          //     type = {
+          //       _params: {},
+          //     };
+          //     break;
+          //   }
+          //   case DATATYPE_CATEGORY.OBJECT: {
+          //     type = {};
+          //     break;
+          //   }
+          //   default: {
+          //     type = BASE_TYPE.STRING;
+          //   }
+          // }
+          // if (dataType?._id == null || type == null) {
+          //   return;
+          // }
+          // dispatch(
+          //   updateDataType({
+          //     id: dataType._id,
+          //     changes: {
+          //       _type: type,
+          //     },
+          //   })
+          // );
         }}
       >
         {Object.values(DATATYPE_CATEGORY).map((category) => {

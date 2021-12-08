@@ -1,4 +1,4 @@
-import { IPin } from "@idealjs/blueprint";
+import { PinJSON } from "@idealjs/blueprint";
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from ".";
@@ -33,8 +33,7 @@ export const pinsSelector = pinsAdapter.getSelectors<RootState>(
   (state) => state.pins
 );
 
-export interface IPinState extends Pick<IPin, "id" | "x" | "y" | "type"> {
-  dataTypeId: string;
+export interface IPinState extends Pick<PinJSON, "id" | "type" | "x" | "y"> {
   parentId: string;
   connectedIds: string[];
 }

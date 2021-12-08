@@ -1,4 +1,4 @@
-import { IChessman } from "@idealjs/blueprint";
+import { ChessmanJSON } from "@idealjs/blueprint";
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from ".";
@@ -30,7 +30,7 @@ export const chessmenSelector = chessmenAdapter.getSelectors<RootState>(
   (state) => state.chessmen
 );
 
-export interface IChessmanState extends Pick<IChessman, "id" | "x" | "y"> {
+export interface IChessmanState extends Pick<ChessmanJSON, "id" | "x" | "y"> {
   dataTypeId: string;
   pinIds: string[];
 }

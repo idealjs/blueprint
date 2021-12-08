@@ -1,4 +1,4 @@
-import { IChessboard } from "@idealjs/blueprint";
+import { ChessboardJSON } from "@idealjs/blueprint";
 import { createSlice, SliceCaseReducers } from "@reduxjs/toolkit";
 
 const slice = createSlice<
@@ -26,4 +26,5 @@ export default slice.reducer;
 
 export const { update: updateChessboard } = slice.actions;
 
-export interface IChessboardState extends Pick<IChessboard, "x" | "y" | "k"> {}
+export interface IChessboardState
+  extends Pick<ChessboardJSON, "x" | "y" | "k"> {}

@@ -39,10 +39,12 @@ const DataTypeList = () => {
           onConfirm={(name) => {
             dispatch(
               upsertDataType({
-                id: uniqid(),
-                name,
-                isArray: false,
-                type: BASE_TYPE.ANY,
+                _id: uniqid(),
+                _name: name,
+                _type: {
+                  _type: "BaseType",
+                  value: BASE_TYPE.ANY,
+                },
               })
             );
             setAddingType(false);
@@ -52,13 +54,13 @@ const DataTypeList = () => {
       {dataTypes.map((dataType) => {
         return (
           <div
-            key={dataType.id}
+            key={dataType._id}
             onClick={() => {
-              selectDataType(dataType.id);
+              selectDataType(dataType._id);
             }}
             style={{ userSelect: "none" }}
           >
-            {dataType?.name}
+            {dataType?._name}
           </div>
         );
       })}

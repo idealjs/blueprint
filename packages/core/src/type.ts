@@ -18,7 +18,7 @@ export interface DataTypeJSON
 
 export interface BaseTypeJSON {
   value: BASE_TYPE;
-  _type: BASE_TYPE;
+  _type: "BaseType";
 }
 
 export interface ArrayTypeJSON {

@@ -29,7 +29,7 @@ const VariableMenu = () => {
     <div>
       <div>selectedVariable: {selectedVariable.name}</div>
       <select
-        value={dataType?.id}
+        value={dataType?._id}
         onChange={(e) => {
           dispatch(
             updateVariable({
@@ -43,8 +43,8 @@ const VariableMenu = () => {
       >
         {dataTypes.map((dataType) => {
           return (
-            <option key={dataType.id} value={dataType.id}>
-              {dataType.name}
+            <option key={dataType._id} value={dataType._id}>
+              {dataType._name}
             </option>
           );
         })}

@@ -44,32 +44,32 @@ const Pin = (props: IProps) => {
             type: string;
           }>
         ) => {
-          if (payload.item?.type === "chessman-pin" && payload.item?.pin) {
-            if (pinRef.current?.type === payload.item.pin.type) {
-              console.warn("[Warn] pin type should not same");
-              return;
-            }
-            if (pinRef.current?.dataTypeId !== payload.item.pin.dataTypeId) {
-              console.warn("[Warn] pin dataType should same");
-              return;
-            }
-            dispatch(
-              updateManyPin([
-                {
-                  id: payload.item.pin.id,
-                  changes: {
-                    connectedIds: [id],
-                  },
-                },
-                {
-                  id: id,
-                  changes: {
-                    connectedIds: [payload.item.pin.id],
-                  },
-                },
-              ])
-            );
-          }
+          // if (payload.item?.type === "chessman-pin" && payload.item?.pin) {
+          //   if (pinRef.current?.type === payload.item.pin.type) {
+          //     console.warn("[Warn] pin type should not same");
+          //     return;
+          //   }
+          //   if (pinRef.current?.dataTypeId !== payload.item.pin.dataTypeId) {
+          //     console.warn("[Warn] pin dataType should same");
+          //     return;
+          //   }
+          //   dispatch(
+          //     updateManyPin([
+          //       {
+          //         id: payload.item.pin.id,
+          //         changes: {
+          //           connectedIds: [id],
+          //         },
+          //       },
+          //       {
+          //         id: id,
+          //         changes: {
+          //           connectedIds: [payload.item.pin.id],
+          //         },
+          //       },
+          //     ])
+          //   );
+          // }
         }
       );
       return () => {
