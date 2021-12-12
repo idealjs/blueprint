@@ -21,7 +21,7 @@ export enum DATATYPE_CATEGORY {
 }
 
 const DataType = () => {
-  const dataType = useSelector((state: RootState) => {
+  const selectedDataType = useSelector((state: RootState) => {
     if (state.selectedDataTypeId == null) {
       return;
     }
@@ -31,32 +31,32 @@ const DataType = () => {
   const dispatch = useDispatch();
 
   const typeRender = useMemo(() => {
-    if (dataType && isDataTypeBaseType(dataType)) {
-      return dataType._type.value;
+    if (selectedDataType && isDataTypeBaseType(selectedDataType)) {
+      return selectedDataType._type.value;
     }
-    if (dataType && isDataTypeFunctionType(dataType)) {
+    if (selectedDataType && isDataTypeFunctionType(selectedDataType)) {
       return null;
     }
-    if (dataType && isDataTypeObjectType(dataType)) {
+    if (selectedDataType && isDataTypeObjectType(selectedDataType)) {
       return null;
     }
-  }, [dataType]);
+  }, [selectedDataType]);
 
   const category = useMemo(() => {
-    if (dataType && isDataTypeBaseType(dataType)) {
+    if (selectedDataType && isDataTypeBaseType(selectedDataType)) {
       return DATATYPE_CATEGORY.BASE;
     }
-    if (dataType && isDataTypeFunctionType(dataType)) {
+    if (selectedDataType && isDataTypeFunctionType(selectedDataType)) {
       return DATATYPE_CATEGORY.FUNCTION;
     }
-    if (dataType && isDataTypeObjectType(dataType)) {
+    if (selectedDataType && isDataTypeObjectType(selectedDataType)) {
       return DATATYPE_CATEGORY.OBJECT;
     }
-  }, [dataType]);
+  }, [selectedDataType]);
 
-  return dataType ? (
+  return selectedDataType ? (
     <div>
-      <div>name:{dataType?._name}</div>
+      <div>name:{selectedDataType?._name}</div>
       <select
         value={category}
         onChange={(e) => {
@@ -83,12 +83,12 @@ const DataType = () => {
           //     type = BASE_TYPE.STRING;
           //   }
           // }
-          // if (dataType?._id == null || type == null) {
+          // if (selectedDataType?._id == null || type == null) {
           //   return;
           // }
           // dispatch(
           //   updateDataType({
-          //     id: dataType._id,
+          //     id: selectedDataType._id,
           //     changes: {
           //       _type: type,
           //     },

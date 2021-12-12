@@ -35,6 +35,7 @@ const slice = createSlice({
     initialDataTypes
   ),
   reducers: {
+    add: dataTypesAdapter.addOne,
     remove: dataTypesAdapter.removeOne,
     update: dataTypesAdapter.updateOne,
     upsert: dataTypesAdapter.upsertOne,
@@ -44,6 +45,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 export const {
+  add: addDataType,
   upsert: upsertDataType,
   remove: removeDataType,
   update: updateDataType,

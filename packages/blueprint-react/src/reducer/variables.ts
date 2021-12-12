@@ -8,6 +8,7 @@ const slice = createSlice({
   name: "variables",
   initialState: variablesAdapter.getInitialState(),
   reducers: {
+    add: variablesAdapter.addOne,
     upsert: variablesAdapter.upsertOne,
     remove: variablesAdapter.removeOne,
     update: variablesAdapter.updateOne,
@@ -17,6 +18,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 export const {
+  add: addVariable,
   upsert: upsertVariable,
   remove: removeVariable,
   update: updateVariable,

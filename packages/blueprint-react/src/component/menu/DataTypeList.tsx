@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import uniqid from "uniqid";
 
 import { RootState } from "../../reducer";
-import { dataTypesSelector, upsertDataType } from "../../reducer/dataTypes";
+import { addDataType, dataTypesSelector } from "../../reducer/dataTypes";
 import { setSelectedDataTypeId } from "../../reducer/selectedDataTypeId";
 import AddThings from "./AddThings";
 
@@ -12,6 +12,12 @@ const DataTypeList = () => {
   const [addingType, setAddingType] = useState(false);
   const dataTypes = useSelector((state: RootState) => {
     return dataTypesSelector.selectAll(state);
+  });
+  const selectedDataType = useSelector((state: RootState) => {
+    if (state.selectedDataTypeId == null) {
+      return;
+    }
+    return dataTypesSelector.selectById(state, state.selectedDataTypeId);
   });
   const dispatch = useDispatch();
   const selectDataType = useCallback(
@@ -50,8 +56,8 @@ const DataTypeList = () => {
           }}
           onConfirm={(name) => {
             dispatch(
-              upsertDataType({
-                _id: uniqid(),
+              addDataType({
+                _id: name,
                 _name: name,
                 _type: {
                   _type: "BaseType",
@@ -70,7 +76,15 @@ const DataTypeList = () => {
             onClick={() => {
               selectDataType(dataType._id);
             }}
-            style={{ userSelect: "none" }}
+            style={{
+              userSelect: "none",
+              border:
+                selectedDataType?._id === dataType._id
+                  ? "2px solid #000"
+                  : undefined,
+              margin:
+                selectedDataType?._id === dataType._id ? "-2px" : undefined,
+            }}
           >
             {dataType?._name}
           </div>

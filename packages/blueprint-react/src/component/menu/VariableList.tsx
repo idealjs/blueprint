@@ -5,7 +5,7 @@ import uniqid from "uniqid";
 
 import { RootState } from "../../reducer";
 import { setSelectedVariableId } from "../../reducer/selectedVariableId";
-import { upsertVariable, variablesSelector } from "../../reducer/variables";
+import { addVariable, variablesSelector } from "../../reducer/variables";
 import AddThings from "./AddThings";
 
 const VariableList = () => {
@@ -13,6 +13,13 @@ const VariableList = () => {
   const variables = useSelector((state: RootState) => {
     return variablesSelector.selectAll(state);
   });
+  const selectedVariable = useSelector((state: RootState) => {
+    if (state.selectedVariableId == null) {
+      return;
+    }
+    return variablesSelector.selectById(state, state.selectedVariableId);
+  });
+
   const dispatch = useDispatch();
   const selectVariable = useCallback(
     (id: string) => {
@@ -49,8 +56,8 @@ const VariableList = () => {
           }}
           onConfirm={(name) => {
             dispatch(
-              upsertVariable({
-                id: uniqid(),
+              addVariable({
+                id: name,
                 name,
                 dataTypeId: BASE_TYPE.ANY,
               })
@@ -66,7 +73,14 @@ const VariableList = () => {
             onClick={() => {
               selectVariable(variable.id);
             }}
-            style={{ userSelect: "none" }}
+            style={{
+              userSelect: "none",
+              border:
+                selectedVariable?.id === variable.id
+                  ? "2px solid #000"
+                  : undefined,
+              margin: selectedVariable?.id === variable.id ? "-2px" : undefined,
+            }}
           >
             <div>{variable.name}</div>
           </div>
