@@ -24,13 +24,25 @@ const DataTypeList = () => {
   return (
     <div>
       <div
-        style={{ cursor: "pointer", userSelect: "none" }}
-        onClick={() => {
-          setAddingType(true);
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
         }}
       >
-        add new type
+        <p>DataType List</p>
+        <div>
+          <button
+            style={{ cursor: "pointer", userSelect: "none" }}
+            onClick={() => {
+              setAddingType(true);
+            }}
+          >
+            +
+          </button>
+        </div>
       </div>
+
       {addingType && (
         <AddThings
           onCancel={() => {

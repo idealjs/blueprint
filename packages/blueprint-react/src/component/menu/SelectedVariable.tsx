@@ -50,9 +50,7 @@ const VariableMenu = () => {
         })}
       </select>
     </div>
-  ) : (
-    <div>no variable selected</div>
-  );
+  ) : null;
 };
 
 export default VariableMenu;

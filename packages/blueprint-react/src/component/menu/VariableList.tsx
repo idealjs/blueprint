@@ -23,13 +23,25 @@ const VariableList = () => {
   return (
     <div>
       <div
-        style={{ cursor: "pointer", userSelect: "none" }}
-        onClick={() => {
-          setAddingVariable(true);
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
         }}
       >
-        add new variable
+        <p>Variable List</p>
+        <div>
+          <button
+            style={{ cursor: "pointer", userSelect: "none" }}
+            onClick={() => {
+              setAddingVariable(true);
+            }}
+          >
+            +
+          </button>
+        </div>
       </div>
+
       {addingVariable && (
         <AddThings
           onCancel={() => {
@@ -56,9 +68,7 @@ const VariableList = () => {
             }}
             style={{ userSelect: "none" }}
           >
-            <div>id: {variable.id}</div>
-            <div>name: {variable.name}</div>
-            <div>type: {variable.dataTypeId}</div>
+            <div>{variable.name}</div>
           </div>
         );
       })}

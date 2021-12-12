@@ -17,6 +17,7 @@ export enum DATATYPE_CATEGORY {
   BASE = "base",
   FUNCTION = "function",
   OBJECT = "object",
+  ARRAY = "array",
 }
 
 const DataType = () => {
