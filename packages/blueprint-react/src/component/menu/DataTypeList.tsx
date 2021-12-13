@@ -1,7 +1,6 @@
 import { BASE_TYPE } from "@idealjs/blueprint";
 import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import uniqid from "uniqid";
 
 import { RootState } from "../../reducer";
 import { addDataType, dataTypesSelector } from "../../reducer/dataTypes";

@@ -1,32 +1,20 @@
 import { BASE_TYPE } from "@idealjs/blueprint";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import uniqid from "uniqid";
 
-import { RootState } from "../../reducer";
-import { setSelectedVariableId } from "../../reducer/selectedVariableId";
-import { addVariable, variablesSelector } from "../../reducer/variables";
-import AddThings from "./AddThings";
+import { RootState } from "../../../reducer";
+import { addVariable, variablesSelector } from "../../../reducer/variables";
+import AddThings from "../AddThings";
+import Variable from "./Variable";
 
 const VariableList = () => {
   const [addingVariable, setAddingVariable] = useState(false);
   const variables = useSelector((state: RootState) => {
     return variablesSelector.selectAll(state);
   });
-  const selectedVariable = useSelector((state: RootState) => {
-    if (state.selectedVariableId == null) {
-      return;
-    }
-    return variablesSelector.selectById(state, state.selectedVariableId);
-  });
 
   const dispatch = useDispatch();
-  const selectVariable = useCallback(
-    (id: string) => {
-      dispatch(setSelectedVariableId(id));
-    },
-    [dispatch]
-  );
+
   return (
     <div>
       <div
@@ -67,24 +55,7 @@ const VariableList = () => {
         />
       )}
       {variables.map((variable) => {
-        return (
-          <div
-            key={variable.id}
-            onClick={() => {
-              selectVariable(variable.id);
-            }}
-            style={{
-              userSelect: "none",
-              border:
-                selectedVariable?.id === variable.id
-                  ? "2px solid #000"
-                  : undefined,
-              margin: selectedVariable?.id === variable.id ? "-2px" : undefined,
-            }}
-          >
-            <div>{variable.name}</div>
-          </div>
-        );
+        return <Variable key={variable.id} variableId={variable.id} />;
       })}
     </div>
   );
