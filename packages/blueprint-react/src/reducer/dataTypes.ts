@@ -1,21 +1,13 @@
-import {
-  ArrayTypeJSON,
-  BASE_TYPE,
-  BaseTypeJSON,
-  DataTypeJSON,
-  FunctionTypeJSON,
-  ObjectTypeJSON,
-  PartialRecord,
-} from "@idealjs/blueprint";
+import { BASE_TYPE, DataTypeJSON, PartialRecord } from "@idealjs/blueprint";
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from ".";
 
-export const dataTypesAdapter = createEntityAdapter<IDataTypeState>({
+export const dataTypesAdapter = createEntityAdapter<DataTypeJSON>({
   selectId: (datatype) => datatype._id,
 });
 
-export const initialDataTypes: IDataTypeState[] = Object.entries(BASE_TYPE).map(
+export const initialDataTypes: DataTypeJSON[] = Object.entries(BASE_TYPE).map(
   (entry) => {
     return {
       _id: entry[0],
@@ -55,41 +47,31 @@ export const dataTypesSelector = dataTypesAdapter.getSelectors<RootState>(
   (state) => state.dataTypes
 );
 
-export interface IDataTypeState<
-  T extends BaseTypeJSON | ArrayTypeJSON | ObjectTypeJSON | FunctionTypeJSON =
-    | BaseTypeJSON
-    | ArrayTypeJSON
-    | ObjectTypeJSON
-    | FunctionTypeJSON
-> extends Pick<DataTypeJSON, "_id" | "_name"> {
-  _type: T;
-}
-
 export interface IFunctionTypeState {
-  _params: PartialRecord<number, IDataTypeState>;
-  _returnType?: IDataTypeState;
+  _params: PartialRecord<number, DataTypeJSON>;
+  _returnType?: DataTypeJSON;
 }
 
 export const isDataTypeBaseType = (
-  dataType: IDataTypeState
-): dataType is IDataTypeState<BaseTypeJSON> => {
+  dataType: DataTypeJSON
+): dataType is DataTypeJSON => {
   return dataType._type._type === "BaseType";
 };
 
 export const isDataTypeArrayType = (
-  dataType: IDataTypeState
-): dataType is IDataTypeState<ArrayTypeJSON> => {
+  dataType: DataTypeJSON
+): dataType is DataTypeJSON => {
   return dataType._type._type === "ArrayType";
 };
 
 export const isDataTypeObjectType = (
-  dataType: IDataTypeState
-): dataType is IDataTypeState<ObjectTypeJSON> => {
+  dataType: DataTypeJSON
+): dataType is DataTypeJSON => {
   return dataType._type._type === "ObjectType";
 };
 
 export const isDataTypeFunctionType = (
-  dataType: IDataTypeState
-): dataType is IDataTypeState<FunctionTypeJSON> => {
+  dataType: DataTypeJSON
+): dataType is DataTypeJSON => {
   return dataType._type._type === "FunctionType";
 };

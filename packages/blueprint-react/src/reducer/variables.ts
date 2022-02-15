@@ -1,8 +1,9 @@
+import { VariableJSON } from "@idealjs/blueprint";
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from ".";
 
-export const variablesAdapter = createEntityAdapter<IVariable>();
+export const variablesAdapter = createEntityAdapter<VariableJSON>();
 
 const slice = createSlice({
   name: "variables",
@@ -27,9 +28,3 @@ export const {
 export const variablesSelector = variablesAdapter.getSelectors<RootState>(
   (state) => state.variables
 );
-
-export interface IVariable {
-  id: string;
-  name: string;
-  dataTypeId: string;
-}
