@@ -16,7 +16,6 @@ class BaseType {
 export default BaseType;
 
 interface BaseType {
-  id: BASE_TYPE;
   value: BASE_TYPE;
   _type: BASE_TYPE;
 }

@@ -21,3 +21,6 @@ export * from "./src/dataType/FunctionType";
 export { default as FunctionType } from "./src/dataType/FunctionType";
 //export types
 export * from "./src/type";
+// export Variable
+export * from "./src/variable/Variable";
+export { default as Variable } from "./src/variable/Variable";
